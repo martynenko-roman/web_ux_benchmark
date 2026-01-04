@@ -1,0 +1,47 @@
+{
+  "name": "web-ux-benchmark",
+  "version": "1.0.0",
+  "description": "Benchmarking Web UX Beyond Core Web Vitals",
+  "type": "module",
+  "main": "dist/cli/index.js",
+  "bin": {
+    "web-ux-benchmark": "./dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/cli/index.ts",
+    "benchmark": "tsx src/cli/index.ts benchmark",
+    "report": "tsx src/cli/index.ts report",
+    "compare": "tsx src/cli/index.ts compare",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "web",
+    "ux",
+    "benchmark",
+    "core-web-vitals",
+    "lighthouse",
+    "webpagetest"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "lighthouse": "^12.0.0",
+    "chrome-launcher": "^1.1.0",
+    "playwright": "^1.41.0",
+    "commander": "^11.1.0",
+    "chalk": "^5.3.0",
+    "ora": "^8.0.1",
+    "axios": "^1.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "typescript": "^5.3.3",
+    "tsx": "^4.7.1",
+    "prettier": "^3.2.5",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0"
+  }
+}
+

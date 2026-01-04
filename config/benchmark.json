@@ -1,0 +1,23 @@
+{
+  "lighthouse": {
+    "preset": "desktop",
+    "categories": ["performance", "accessibility"],
+    "throttling": "default"
+  },
+  "playwright": {
+    "headless": true,
+    "runs": 3,
+    "timeout": 30000,
+    "viewport": {
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "compositeWeights": {
+    "cvv": 0.30,
+    "interactionStability": 0.25,
+    "accessibility": 0.25,
+    "reliability": 0.20
+  }
+}
+

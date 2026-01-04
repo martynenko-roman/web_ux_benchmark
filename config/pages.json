@@ -1,0 +1,25 @@
+{
+  "pages": [
+    {
+      "id": "duckduckgo-search",
+      "name": "DuckDuckGo Search",
+      "url": "https://duckduckgo.com/?q=web+performance+testing",
+      "category": "search-engine",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "wikipedia-article",
+      "name": "Wikipedia Article",
+      "url": "https://en.wikipedia.org/wiki/Web_performance",
+      "category": "encyclopedia",
+      "expectedPattern": "article-with-interactions"
+    },
+    {
+      "id": "amazon-product-page",
+      "name": "Amazon Product Page",
+      "url": "https://a.co/d/gFKVZ7i",
+      "category": "ecommerce",
+      "expectedPattern": "product-detail"
+    }
+  ]
+}
