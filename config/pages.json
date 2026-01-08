@@ -20,6 +20,132 @@
       "url": "https://a.co/d/gFKVZ7i",
       "category": "ecommerce",
       "expectedPattern": "product-detail"
+    },
+    {
+      "id": "youtube-video",
+      "name": "YouTube Video",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "category": "video",
+      "expectedPattern": "video-player"
+    },
+    {
+      "id": "bbc-news-article",
+      "name": "BBC News Article",
+      "url": "https://www.bbc.com/news",
+      "category": "news",
+      "expectedPattern": "news-listing"
+    },
+    {
+      "id": "github-repository",
+      "name": "GitHub Repository",
+      "url": "https://github.com/microsoft/TypeScript",
+      "category": "code-hosting",
+      "expectedPattern": "repository-page"
+    },
+    {
+      "id": "mdn-documentation",
+      "name": "MDN Documentation",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+      "category": "documentation",
+      "expectedPattern": "documentation-page"
+    },
+    {
+      "id": "stack-overflow-question",
+      "name": "Stack Overflow Question",
+      "url": "https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array",
+      "category": "q-and-a",
+      "expectedPattern": "question-answer"
+    },
+    {
+      "id": "reddit-community",
+      "name": "Reddit Community",
+      "url": "https://www.reddit.com/r/programming",
+      "category": "social-media",
+      "expectedPattern": "community-feed"
+    },
+    {
+      "id": "medium-article",
+      "name": "Medium Article",
+      "url": "https://medium.com",
+      "category": "blog",
+      "expectedPattern": "article-feed"
+    },
+    {
+      "id": "google-maps",
+      "name": "Google Maps",
+      "url": "https://www.google.com/maps",
+      "category": "maps",
+      "expectedPattern": "interactive-map"
+    },
+    {
+      "id": "spotify-playlist",
+      "name": "Spotify",
+      "url": "https://open.spotify.com",
+      "category": "music-streaming",
+      "expectedPattern": "music-player"
+    },
+    {
+      "id": "khan-academy-course",
+      "name": "Khan Academy",
+      "url": "https://www.khanacademy.org",
+      "category": "education",
+      "expectedPattern": "course-content"
+    },
+    {
+      "id": "weather-com",
+      "name": "Weather.com",
+      "url": "https://weather.com",
+      "category": "weather",
+      "expectedPattern": "weather-dashboard"
+    },
+    {
+      "id": "nytimes-article",
+      "name": "New York Times",
+      "url": "https://www.nytimes.com",
+      "category": "news",
+      "expectedPattern": "news-homepage"
+    },
+    {
+      "id": "flickr-photos",
+      "name": "Flickr",
+      "url": "https://www.flickr.com",
+      "category": "photo-sharing",
+      "expectedPattern": "photo-gallery"
+    },
+    {
+      "id": "dribbble-design",
+      "name": "Dribbble",
+      "url": "https://dribbble.com",
+      "category": "design-portfolio",
+      "expectedPattern": "design-gallery"
+    },
+    {
+      "id": "linkedin-profile",
+      "name": "LinkedIn",
+      "url": "https://www.linkedin.com",
+      "category": "professional-network",
+      "expectedPattern": "professional-feed"
+    },
+    {
+      "id": "coursera-course",
+      "name": "Coursera",
+      "url": "https://www.coursera.org",
+      "category": "education",
+      "expectedPattern": "course-catalog"
+    },
+    {
+      "id": "dropbox-home",
+      "name": "Dropbox",
+      "url": "https://www.dropbox.com",
+      "category": "cloud-storage",
+      "expectedPattern": "file-manager"
+    },
+    {
+      "id": "usa-gov",
+      "name": "USA.gov",
+      "url": "https://www.usa.gov",
+      "category": "government",
+      "expectedPattern": "government-portal"
     }
   ]
 }

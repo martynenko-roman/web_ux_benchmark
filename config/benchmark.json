@@ -6,7 +6,7 @@
   },
   "playwright": {
     "headless": true,
-    "runs": 3,
+    "runs": 5,
     "timeout": 30000,
     "viewport": {
       "width": 1920,
