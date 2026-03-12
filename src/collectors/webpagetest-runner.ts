@@ -1,4 +1,4 @@
-import { chromium, type Browser, type Page } from "playwright";
+import { chromium, type Page } from "playwright";
 import type { InteractionMetrics, ReliabilityMetrics } from "../types/metrics.js";
 import type { PlaywrightConfig } from "../types/config.js";
 import { writeJsonFile } from "../utils/file-utils.js";
@@ -45,7 +45,7 @@ export async function runPlaywrightTest(
     const interactionStability: InteractionMetrics = {
       layoutShiftDuringInteractions: aggregatedResult.layoutShift,
       inputResponsiveness: aggregatedResult.inputResponsiveness,
-      animationSmoothness: aggregatedResult.animationSmoothness,
+      frameDropRate: aggregatedResult.animationSmoothness,
       interactionLatency: aggregatedResult.interactionLatency,
     };
 

@@ -1,0 +1,126 @@
+{
+  "archetypes": {
+    "content-article": "Text-heavy pages — news homepages, editorials, blog feeds. Tests scroll performance, CLS from lazy-loaded ads and images, TBT from third-party scripts, and typography/readability rendering.",
+    "search-results": "Query input paired with filterable, sortable result lists. Tests input responsiveness (INP), result-list rendering speed, filter/sort interaction latency, and pagination or infinite-scroll mechanics.",
+    "product-detail": "Single-item pages with rich media, specifications, reviews, and CTAs. Tests LCP for hero images, image carousel and gallery interactions, CTA responsiveness, and layout stability under dynamic content loading.",
+    "listing-feed": "Grids, feeds, and directories displaying multiple items (social posts, designs, products). Tests lazy loading, infinite scroll, card/tile rendering performance, CLS from deferred images, and virtualization.",
+    "landing-marketing": "Hero-driven brand and SaaS pages with animations and conversion CTAs. Tests FCP/LCP above the fold, animation jank, CLS from late-loading hero assets, and overall first-impression rendering speed.",
+    "interactive-tool": "Dashboards, maps, calculators, and data-rich applications. Tests complex JS-driven interactions (INP), data visualization rendering, real-time DOM updates, canvas/WebGL performance, and client-side compute overhead.",
+    "media-playback": "Video, audio, and image-dominant pages. Tests media loading strategy, player control responsiveness, gallery/carousel transitions, adaptive streaming, and bandwidth management.",
+    "reference-portal": "Documentation hubs, educational platforms, and institutional sites with deep navigation. Tests sidebar/nav interaction latency, content density rendering, progressive disclosure patterns, search within docs, and accessibility compliance."
+  },
+  "pages": [
+    {
+      "id": "wikipedia-web-performance",
+      "name": "Wikipedia – Web Performance",
+      "url": "https://en.wikipedia.org/wiki/Web_performance",
+      "category": "content-article",
+      "expectedPattern": "long-form-article"
+    },
+    {
+      "id": "wired-home",
+      "name": "Wired",
+      "url": "https://www.wired.com",
+      "category": "content-article",
+      "expectedPattern": "magazine-homepage"
+    },
+    {
+      "id": "arstechnica-home",
+      "name": "Ars Technica",
+      "url": "https://arstechnica.com",
+      "category": "content-article",
+      "expectedPattern": "tech-magazine"
+    },
+    {
+      "id": "the-verge-home",
+      "name": "The Verge",
+      "url": "https://www.theverge.com",
+      "category": "content-article",
+      "expectedPattern": "tech-magazine"
+    },
+    {
+      "id": "duckduckgo-search",
+      "name": "DuckDuckGo Search",
+      "url": "https://duckduckgo.com/?q=web+performance+testing",
+      "category": "search-results",
+      "expectedPattern": "web-search"
+    },
+    {
+      "id": "amazon-product",
+      "name": "Amazon Product Page",
+      "url": "https://a.co/d/gFKVZ7i",
+      "category": "product-detail",
+      "expectedPattern": "ecommerce-product"
+    },
+    {
+      "id": "reddit-programming",
+      "name": "Reddit – r/programming",
+      "url": "https://www.reddit.com/r/programming",
+      "category": "listing-feed",
+      "expectedPattern": "community-feed"
+    },
+    {
+      "id": "hackernews-front",
+      "name": "Hacker News",
+      "url": "https://news.ycombinator.com",
+      "category": "listing-feed",
+      "expectedPattern": "link-aggregator"
+    },
+    {
+      "id": "stripe-home",
+      "name": "Stripe",
+      "url": "https://stripe.com",
+      "category": "landing-marketing",
+      "expectedPattern": "saas-landing"
+    },
+    {
+      "id": "notion-home",
+      "name": "Notion",
+      "url": "https://www.notion.so",
+      "category": "landing-marketing",
+      "expectedPattern": "saas-landing"
+    },
+    {
+      "id": "google-maps",
+      "name": "Google Maps",
+      "url": "https://www.google.com/maps",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-map"
+    },
+    {
+      "id": "yahoo-finance",
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com",
+      "category": "interactive-tool",
+      "expectedPattern": "finance-dashboard"
+    },
+    {
+      "id": "youtube-video",
+      "name": "YouTube Video",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "category": "media-playback",
+      "expectedPattern": "video-player"
+    },
+    {
+      "id": "vimeo-home",
+      "name": "Vimeo",
+      "url": "https://vimeo.com",
+      "category": "media-playback",
+      "expectedPattern": "video-platform"
+    },
+    {
+      "id": "mdn-docs",
+      "name": "MDN – JavaScript",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+      "category": "reference-portal",
+      "expectedPattern": "documentation-hub"
+    },
+    {
+      "id": "w3schools-reference",
+      "name": "W3Schools",
+      "url": "https://www.w3schools.com",
+      "category": "reference-portal",
+      "expectedPattern": "tutorial-portal"
+    }
+  ]
+}

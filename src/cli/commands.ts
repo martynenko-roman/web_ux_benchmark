@@ -18,12 +18,12 @@ export function createBenchmarkCommand(): Command {
     .option(
       "-c, --config <path>",
       "Path to benchmark config file",
-      "config/benchmark.json"
+      "config/benchmark.json",
     )
     .option(
       "--pages-config <path>",
       "Path to pages config file",
-      "config/pages.json"
+      "config/pages.json",
     )
     .option("-o, --output <dir>", "Output directory", "data")
     .option("--skip-playwright", "Skip Playwright test collection")
@@ -32,12 +32,8 @@ export function createBenchmarkCommand(): Command {
       const spinner = ora("Loading configuration...").start();
 
       try {
-        const pagesConfig = await readJsonFile<PagesConfig>(
-          options.pagesConfig
-        );
-        const benchmarkConfig = await readJsonFile<BenchmarkConfig>(
-          options.config
-        );
+        const pagesConfig = await readJsonFile<PagesConfig>(options.pagesConfig);
+        const benchmarkConfig = await readJsonFile<BenchmarkConfig>(options.config);
 
         spinner.succeed("Configuration loaded");
 
@@ -55,11 +51,15 @@ export function createBenchmarkCommand(): Command {
         const outputDir = path.resolve(options.output);
         await ensureDirExists(outputDir);
 
-        const results = await runBenchmarks(pages, benchmarkConfig, {
-          outputDir,
-          skipWebPageTest: options.skipPlaywright,
-          skipCrUX: options.skipCrux,
-        });
+        const { benchmarks: results, allRunData } = await runBenchmarks(
+          pages,
+          benchmarkConfig,
+          {
+            outputDir,
+            skipWebPageTest: options.skipPlaywright,
+            skipCrUX: options.skipCrux,
+          },
+        );
 
         if (results.length === 0) {
           console.error(chalk.red("No benchmarks completed successfully"));
@@ -70,15 +70,39 @@ export function createBenchmarkCommand(): Command {
 
         const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
         const reportPath = path.join(outputDir, "reports", `report-${timestamp}.json`);
+        await ensureDirExists(path.join(outputDir, "reports"));
 
-        await generateReport(results, comparison, reportPath);
+        const coveragePenaltyFactor = benchmarkConfig.coveragePenaltyFactor ?? 0.5;
 
-        console.log(chalk.green(`\n✓ Report generated: ${reportPath}\n`));
-        console.log(generateSummary({
+        const runsPath = await generateReport(
+          results,
+          comparison,
+          reportPath,
+          {
+            compositeWeights: benchmarkConfig.compositeWeights,
+            coveragePenaltyFactor,
+            playwrightRuns: benchmarkConfig.playwright.runs,
+          },
+          allRunData,
+        );
+
+        console.log(chalk.green(`\n✓ Report generated: ${reportPath}`));
+        if (runsPath) {
+          console.log(chalk.green(`✓ Per-run data: ${runsPath}`));
+        }
+        console.log("");
+
+        const report = {
           metadata: {
             timestamp: new Date().toISOString(),
-            version: "1.0.0",
+            reportVersion: 2,
+            toolVersion: "2.0.0",
             pages: results.map((r) => r.pageId),
+            config: {
+              compositeWeights: benchmarkConfig.compositeWeights as unknown as Record<string, number>,
+              coveragePenaltyFactor,
+              playwrightRuns: benchmarkConfig.playwright.runs,
+            },
           },
           pages: results,
           rankings: {
@@ -87,7 +111,25 @@ export function createBenchmarkCommand(): Command {
             rankFlips: comparison.rankFlips,
           },
           statistics: comparison.statistics,
-        }));
+          coverageSummary: {
+            totalPages: results.length,
+            pagesWithInteractionMetrics: results.filter(
+              (p) => p.coverage.interactionStability.available > 0,
+            ).length,
+            pagesWithReliabilityMetrics: results.filter(
+              (p) => p.coverage.reliability.available > 0,
+            ).length,
+            metricPopulation: {},
+            averageCoveragePercentage:
+              results.length > 0
+                ? results.reduce((s, p) => s + p.coverage.overall.percentage, 0) /
+                  results.length
+                : 0,
+          },
+          runsArtifactPath: runsPath,
+        };
+
+        console.log(generateSummary(report));
       } catch (error: any) {
         spinner.fail("Benchmark failed");
         console.error(chalk.red(`Error: ${error.message}`));
@@ -106,10 +148,20 @@ export function createReportCommand(): Command {
 
   command
     .description("Generate report from existing normalized data")
-    .option("-i, --input <dir>", "Input directory with normalized data", "data/normalized")
-    .option("-o, --output <path>", "Output report path", "data/reports/report.json")
-    .action(async (options) => {
-      console.log(chalk.yellow("Report generation from normalized data not yet implemented"));
+    .option(
+      "-i, --input <dir>",
+      "Input directory with normalized data",
+      "data/normalized",
+    )
+    .option(
+      "-o, --output <path>",
+      "Output report path",
+      "data/reports/report.json",
+    )
+    .action(async () => {
+      console.log(
+        chalk.yellow("Report generation from normalized data not yet implemented"),
+      );
       console.log(chalk.blue("Use the benchmark command to generate reports"));
     });
 
@@ -125,26 +177,45 @@ export function createCompareCommand(): Command {
     .requiredOption("-c, --current <path>", "Path to current report")
     .action(async (options) => {
       try {
-        const baseline = await readJsonFile(options.baseline);
-        const current = await readJsonFile(options.current);
+        const baseline = await readJsonFile<any>(options.baseline);
+        const current = await readJsonFile<any>(options.current);
 
         console.log(chalk.blue("\n=== Comparison Report ===\n"));
 
         console.log(chalk.yellow("Baseline:"), options.baseline);
         console.log(`  Timestamp: ${baseline.metadata.timestamp}`);
         console.log(`  Pages: ${baseline.pages.length}`);
+        console.log(
+          `  Version: ${baseline.metadata.reportVersion || baseline.metadata.version}`,
+        );
 
         console.log(chalk.yellow("\nCurrent:"), options.current);
         console.log(`  Timestamp: ${current.metadata.timestamp}`);
         console.log(`  Pages: ${current.pages.length}`);
+        console.log(
+          `  Version: ${current.metadata.reportVersion || current.metadata.version}`,
+        );
 
         console.log(chalk.yellow("\nStatistics Comparison:"));
         console.log(
-          `  Correlation: ${baseline.statistics.correlation} → ${current.statistics.correlation}`
+          `  Correlation: ${baseline.statistics.correlation} → ${current.statistics.correlation}`,
         );
         console.log(
-          `  Rank Flips: ${baseline.statistics.rankFlipCount} → ${current.statistics.rankFlipCount}`
+          `  Rank Flips: ${baseline.statistics.rankFlipCount} → ${current.statistics.rankFlipCount}`,
         );
+
+        if (current.coverageSummary) {
+          console.log(chalk.yellow("\nCoverage (Current):"));
+          console.log(
+            `  Average: ${current.coverageSummary.averageCoveragePercentage.toFixed(1)}%`,
+          );
+          console.log(
+            `  Interaction pages: ${current.coverageSummary.pagesWithInteractionMetrics}/${current.coverageSummary.totalPages}`,
+          );
+          console.log(
+            `  Reliability pages: ${current.coverageSummary.pagesWithReliabilityMetrics}/${current.coverageSummary.totalPages}`,
+          );
+        }
 
         console.log(chalk.green("\n✓ Comparison complete"));
       } catch (error: any) {
@@ -155,4 +226,3 @@ export function createCompareCommand(): Command {
 
   return command;
 }
-

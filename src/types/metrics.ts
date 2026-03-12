@@ -3,12 +3,15 @@ export interface CWVMetrics {
   fid: number | null;
   inp: number | null;
   cls: number | null;
+  /** Playwright-based proxy for INP: time from user event dispatch to next paint (ms). */
+  inpProxy: number | null;
 }
 
 export interface InteractionMetrics {
   layoutShiftDuringInteractions: number | null;
   inputResponsiveness: number | null;
-  animationSmoothness: number | null;
+  /** RAF-cadence frame drop rate (0–100, lower is better). Replaces the old always-null animationSmoothness. */
+  frameDropRate: number | null;
   interactionLatency: number | null;
 }
 
@@ -28,9 +31,8 @@ export interface ReliabilityMetrics {
 
 export interface RawMetrics {
   lighthouse?: any;
-  webpagetest?: any;
+  playwright?: any;
   crux?: any;
-  rum?: any;
 }
 
 export interface NormalizedMetrics {
@@ -41,3 +43,49 @@ export interface NormalizedMetrics {
   raw: RawMetrics;
 }
 
+export type MeasurementStage =
+  | "lighthouse"
+  | "playwright"
+  | "crux";
+
+export interface StageStatus {
+  stage: MeasurementStage;
+  success: boolean;
+  failureReason?: string;
+  durationMs?: number;
+}
+
+export interface CategoryCoverage {
+  available: number;
+  expected: number;
+  percentage: number;
+  missing: string[];
+}
+
+export interface PageCoverage {
+  overall: CategoryCoverage;
+  cvv: CategoryCoverage;
+  interactionStability: CategoryCoverage;
+  accessibility: CategoryCoverage;
+  reliability: CategoryCoverage;
+}
+
+export interface PageDiagnostics {
+  stages: StageStatus[];
+  coverage: PageCoverage;
+}
+
+export interface PerRunMetrics {
+  run: number;
+  layoutShifts: number;
+  inputLatencies: number[];
+  inpProxyValues: number[];
+  frameDropRate: number | null;
+  consoleErrorCount: number;
+  totalConsoleMessageCount: number;
+  networkRequestCount: number;
+  failedRequestCount: number;
+  successfulRequestCount: number;
+  serviceWorkerAvailable: boolean;
+  totalTimeMs: number;
+}

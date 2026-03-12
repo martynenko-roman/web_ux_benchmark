@@ -3,6 +3,9 @@ import type {
   InteractionMetrics,
   AccessibilityMetrics,
   ReliabilityMetrics,
+  PageDiagnostics,
+  PageCoverage,
+  PerRunMetrics,
 } from "./metrics.js";
 
 export interface Ranking {
@@ -33,14 +36,33 @@ export interface PageBenchmark {
     accessibility: number;
     reliability: number;
     composite: number;
+    /** Raw composite before coverage penalty. */
+    rawComposite: number;
+    coverageFactor: number;
   };
+  diagnostics: PageDiagnostics;
+  coverage: PageCoverage;
+}
+
+export interface CoverageSummary {
+  totalPages: number;
+  pagesWithInteractionMetrics: number;
+  pagesWithReliabilityMetrics: number;
+  metricPopulation: Record<string, { populated: number; total: number; percentage: number }>;
+  averageCoveragePercentage: number;
 }
 
 export interface BenchmarkReport {
   metadata: {
     timestamp: string;
-    version: string;
+    reportVersion: number;
+    toolVersion: string;
     pages: string[];
+    config: {
+      compositeWeights: Record<string, number>;
+      coveragePenaltyFactor: number;
+      playwrightRuns: number;
+    };
   };
   pages: PageBenchmark[];
   rankings: {
@@ -53,5 +75,19 @@ export interface BenchmarkReport {
     rankFlipCount: number;
     rankFlipPercentage: number;
   };
+  coverageSummary: CoverageSummary;
+  /** Path to companion runs artifact file with per-run data. */
+  runsArtifactPath: string | null;
 }
 
+export interface RunsArtifact {
+  metadata: {
+    timestamp: string;
+    reportVersion: number;
+  };
+  pages: Array<{
+    pageId: string;
+    url: string;
+    runs: PerRunMetrics[];
+  }>;
+}

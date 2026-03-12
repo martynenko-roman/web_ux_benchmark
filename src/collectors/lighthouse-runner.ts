@@ -1,5 +1,5 @@
 import lighthouse from "lighthouse";
-import type { CWVMetrics, AccessibilityMetrics, RawMetrics } from "../types/metrics.js";
+import type { CWVMetrics, AccessibilityMetrics } from "../types/metrics.js";
 import type { LighthouseConfig } from "../types/config.js";
 import { writeJsonFile } from "../utils/file-utils.js";
 import { createRequire } from "module";
@@ -17,7 +17,7 @@ export interface LighthouseResult {
 export async function runLighthouse(
   url: string,
   config: LighthouseConfig,
-  outputDir?: string
+  outputDir?: string,
 ): Promise<LighthouseResult> {
   const chrome = await chromeLauncher.launch({ chromeFlags: ["--headless"] });
 
@@ -47,15 +47,16 @@ export async function runLighthouse(
       lcp: lhr.audits["largest-contentful-paint"]?.numericValue ?? null,
       fid: lhr.audits["first-input-delay"]?.numericValue ?? null,
       inp: lhr.audits["interaction-to-next-paint"]?.numericValue ?? null,
-      // CLS can be 0 (good), so we need to check for null/undefined specifically
-      cls: lhr.audits["cumulative-layout-shift"]?.numericValue !== undefined
-        ? lhr.audits["cumulative-layout-shift"].numericValue
-        : null,
+      cls:
+        lhr.audits["cumulative-layout-shift"]?.numericValue !== undefined
+          ? lhr.audits["cumulative-layout-shift"].numericValue
+          : null,
+      inpProxy: null,
     };
 
     const accessibility: AccessibilityMetrics = {
       wcagComplianceScore:
-        lhr.categories.accessibility?.score !== undefined
+        lhr.categories.accessibility?.score != null
           ? lhr.categories.accessibility.score * 100
           : null,
       keyboardNavigationScore: extractKeyboardNavigationScore(lhr),
@@ -78,10 +79,16 @@ export async function runLighthouse(
 
 function extractKeyboardNavigationScore(lhr: any): number | null {
   const keyboardAudits = [
-    "keyboard-access",
-    "focusable-controls",
+    "tabindex",
+    "accesskeys",
+    "interactive-element-affordance",
+    "logical-tab-order",
+    "managed-focus",
     "focus-traps",
-    "focus-order",
+    "custom-controls-roles",
+    "visual-order-follows-dom",
+    "offscreen-content-hidden",
+    "custom-controls-labels",
   ];
   let totalScore = 0;
   let count = 0;
@@ -94,7 +101,14 @@ function extractKeyboardNavigationScore(lhr: any): number | null {
     }
   }
 
-  return count > 0 ? (totalScore / count) * 100 : null;
+  if (count > 0) return (totalScore / count) * 100;
+
+  const a11yScore = lhr.categories.accessibility?.score;
+  if (a11yScore !== null && a11yScore !== undefined) {
+    return a11yScore * 100;
+  }
+
+  return null;
 }
 
 function extractScreenReaderScore(lhr: any): number | null {
@@ -107,6 +121,12 @@ function extractScreenReaderScore(lhr: any): number | null {
     "aria-roles",
     "aria-valid-attr-value",
     "aria-valid-attr",
+    "button-name",
+    "document-title",
+    "html-has-lang",
+    "image-alt",
+    "label",
+    "link-name",
   ];
   let totalScore = 0;
   let count = 0;
@@ -129,4 +149,3 @@ function extractColorContrastScore(lhr: any): number | null {
   }
   return null;
 }
-

@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { CWVMetrics, RawMetrics } from "../types/metrics.js";
+import type { CWVMetrics } from "../types/metrics.js";
 import { writeJsonFile } from "../utils/file-utils.js";
 
 export interface CrUXResult {
@@ -49,6 +49,7 @@ export async function collectCrUXData(
       fid: extractPercentile(data, "first_input_delay", 75),
       inp: null,
       cls: extractPercentile(data, "cumulative_layout_shift", 75),
+      inpProxy: null,
     };
 
     return {

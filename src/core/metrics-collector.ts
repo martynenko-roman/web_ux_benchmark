@@ -5,6 +5,8 @@ import type {
   ReliabilityMetrics,
   NormalizedMetrics,
   RawMetrics,
+  CategoryCoverage,
+  PageCoverage,
 } from "../types/metrics.js";
 import type { LighthouseResult } from "../collectors/lighthouse-runner.js";
 import type { PlaywrightResult } from "../collectors/playwright-runner.js";
@@ -12,23 +14,22 @@ import type { CrUXResult } from "../collectors/crux-collector.js";
 
 export interface CollectedMetrics {
   lighthouse?: LighthouseResult;
-  webpagetest?: PlaywrightResult;
+  playwright?: PlaywrightResult;
   crux?: CrUXResult;
 }
 
-export function aggregateMetrics(
-  collected: CollectedMetrics
-): NormalizedMetrics {
+export function aggregateMetrics(collected: CollectedMetrics): NormalizedMetrics {
   const cvv: CWVMetrics = mergeCWV(
     collected.lighthouse?.cvv,
-    collected.crux?.cvv
+    collected.crux?.cvv,
+    collected.playwright?.inpProxy ?? null,
   );
 
   const interactionStability: InteractionMetrics =
-    collected.webpagetest?.interactionStability ?? {
+    collected.playwright?.interactionStability ?? {
       layoutShiftDuringInteractions: null,
       inputResponsiveness: null,
-      animationSmoothness: null,
+      frameDropRate: null,
       interactionLatency: null,
     };
 
@@ -41,7 +42,7 @@ export function aggregateMetrics(
     };
 
   const reliability: ReliabilityMetrics =
-    collected.webpagetest?.reliability ?? {
+    collected.playwright?.reliability ?? {
       errorRate: null,
       networkFailureRecovery: null,
       resourceLoadSuccessRate: null,
@@ -50,72 +51,119 @@ export function aggregateMetrics(
 
   const raw: RawMetrics = {
     lighthouse: collected.lighthouse?.raw,
-    webpagetest: collected.webpagetest?.raw,
+    playwright: collected.playwright?.raw,
     crux: collected.crux?.raw,
   };
 
-  return {
-    cvv,
-    interactionStability,
-    accessibility,
-    reliability,
-    raw,
-  };
+  return { cvv, interactionStability, accessibility, reliability, raw };
 }
 
 function mergeCWV(
   lighthouse?: CWVMetrics | null,
-  crux?: CWVMetrics | null
+  crux?: CWVMetrics | null,
+  playwrightInpProxy?: number | null,
 ): CWVMetrics {
   return {
     lcp: lighthouse?.lcp ?? crux?.lcp ?? null,
     fid: lighthouse?.fid ?? crux?.fid ?? null,
     inp: lighthouse?.inp ?? crux?.inp ?? null,
     cls: lighthouse?.cls ?? crux?.cls ?? null,
+    inpProxy: playwrightInpProxy ?? lighthouse?.inpProxy ?? null,
   };
 }
 
-export function validateDataCompleteness(
-  metrics: NormalizedMetrics
-): {
-  isComplete: boolean;
-  missingFields: string[];
-} {
-  const missingFields: string[] = [];
+function computeCategoryCoverage(
+  values: Record<string, unknown>,
+  categoryName: string,
+): CategoryCoverage {
+  const keys = Object.keys(values);
+  const missing: string[] = [];
+  let available = 0;
 
-  // LCP is critical - should always be available
-  if (metrics.cvv.lcp === null || metrics.cvv.lcp === undefined) {
-    missingFields.push("cvv.lcp");
-  }
-
-  // CLS can be 0 (good), but null/undefined means missing
-  if (metrics.cvv.cls === null || metrics.cvv.cls === undefined) {
-    missingFields.push("cvv.cls");
-  }
-
-  // FID/INP - at least one should be available, but both can be missing if no interactions occurred
-  if (metrics.cvv.fid === null && metrics.cvv.inp === null) {
-    missingFields.push("cvv.fid/inp");
-  }
-
-  // Input responsiveness - can be missing if no interactions were performed
-  if (metrics.interactionStability.inputResponsiveness === null) {
-    missingFields.push("interactionStability.inputResponsiveness");
-  }
-
-  // Accessibility score should be available from Lighthouse
-  if (metrics.accessibility.wcagComplianceScore === null || metrics.accessibility.wcagComplianceScore === undefined) {
-    missingFields.push("accessibility.wcagComplianceScore");
-  }
-
-  // Error rate - null means no console messages were captured (could be 0 errors or no data)
-  if (metrics.reliability.errorRate === null) {
-    missingFields.push("reliability.errorRate");
+  for (const key of keys) {
+    if (values[key] !== null && values[key] !== undefined) {
+      available++;
+    } else {
+      missing.push(`${categoryName}.${key}`);
+    }
   }
 
   return {
-    isComplete: missingFields.length === 0,
-    missingFields,
+    available,
+    expected: keys.length,
+    percentage: keys.length > 0 ? (available / keys.length) * 100 : 0,
+    missing,
   };
 }
 
+export function computePageCoverage(metrics: NormalizedMetrics): PageCoverage {
+  const cvv = computeCategoryCoverage(
+    {
+      lcp: metrics.cvv.lcp,
+      cls: metrics.cvv.cls,
+      inpProxy: metrics.cvv.inpProxy,
+    },
+    "cvv",
+  );
+
+  const interactionStability = computeCategoryCoverage(
+    {
+      layoutShiftDuringInteractions: metrics.interactionStability.layoutShiftDuringInteractions,
+      inputResponsiveness: metrics.interactionStability.inputResponsiveness,
+      frameDropRate: metrics.interactionStability.frameDropRate,
+      interactionLatency: metrics.interactionStability.interactionLatency,
+    },
+    "interactionStability",
+  );
+
+  const accessibility = computeCategoryCoverage(
+    {
+      wcagComplianceScore: metrics.accessibility.wcagComplianceScore,
+      keyboardNavigationScore: metrics.accessibility.keyboardNavigationScore,
+      screenReaderCompatibility: metrics.accessibility.screenReaderCompatibility,
+      colorContrastRatio: metrics.accessibility.colorContrastRatio,
+    },
+    "accessibility",
+  );
+
+  const reliability = computeCategoryCoverage(
+    {
+      errorRate: metrics.reliability.errorRate,
+      networkFailureRecovery: metrics.reliability.networkFailureRecovery,
+      resourceLoadSuccessRate: metrics.reliability.resourceLoadSuccessRate,
+      serviceWorkerAvailable: metrics.reliability.serviceWorkerAvailable,
+    },
+    "reliability",
+  );
+
+  const totalAvailable =
+    cvv.available + interactionStability.available + accessibility.available + reliability.available;
+  const totalExpected =
+    cvv.expected + interactionStability.expected + accessibility.expected + reliability.expected;
+  const allMissing = [
+    ...cvv.missing,
+    ...interactionStability.missing,
+    ...accessibility.missing,
+    ...reliability.missing,
+  ];
+
+  const overall: CategoryCoverage = {
+    available: totalAvailable,
+    expected: totalExpected,
+    percentage: totalExpected > 0 ? (totalAvailable / totalExpected) * 100 : 0,
+    missing: allMissing,
+  };
+
+  return { overall, cvv, interactionStability, accessibility, reliability };
+}
+
+export function validateDataCompleteness(metrics: NormalizedMetrics): {
+  isComplete: boolean;
+  missingFields: string[];
+} {
+  const coverage = computePageCoverage(metrics);
+  return {
+    isComplete: coverage.overall.missing.length === 0,
+    missingFields: coverage.overall.missing,
+  };
+}

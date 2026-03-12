@@ -1,4 +1,4 @@
-import type { ReliabilityMetrics, RawMetrics } from "../types/metrics.js";
+import type { ReliabilityMetrics } from "../types/metrics.js";
 import { writeJsonFile } from "../utils/file-utils.js";
 
 export interface RUMResult {

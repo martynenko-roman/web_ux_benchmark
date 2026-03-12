@@ -39,5 +39,6 @@ export interface BenchmarkConfig {
   lighthouse: LighthouseConfig;
   playwright: PlaywrightConfig;
   compositeWeights: CompositeWeights;
+  /** Exponent for coverage penalty. Default 0.5. Set 0 to disable. */
+  coveragePenaltyFactor?: number;
 }
-

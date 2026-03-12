@@ -66,7 +66,6 @@ function identifyRankFlips(
 ): RankFlip[] {
   const rankFlips: RankFlip[] = [];
 
-  const cvvRankMap = new Map(cvvRankings.map((r) => [r.pageId, r.rank]));
   const compositeRankMap = new Map(
     compositeRankings.map((r) => [r.pageId, r.rank])
   );

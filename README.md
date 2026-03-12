@@ -6,132 +6,94 @@ A comprehensive benchmarking system that evaluates web UX using a composite fram
 
 ## Features
 
-- **Core Web Vitals**: LCP, FID/INP, CLS measurement
-- **Interaction Stability**: Layout shifts during interactions, input responsiveness, animation smoothness
-- **Accessibility**: WCAG compliance, keyboard navigation, screen reader compatibility
+- **Core Web Vitals**: LCP, CLS, and INP proxy measurement
+- **Interaction Stability**: Layout shifts during interactions, input responsiveness, frame drop rate, interaction latency
+- **Accessibility**: WCAG compliance, keyboard navigation, screen reader compatibility, color contrast
 - **Reliability**: Error rates, network failure recovery, resource load success
-- **Composite Scoring**: Unified UX score combining all metrics
+- **Composite Scoring**: Unified UX score with coverage-aware weighting
 - **Ranking Comparison**: Identify rank flips between CWV-only and composite rankings
+- **Coverage Tracking**: Per-page and global metric coverage diagnostics
+- **Per-Run Data**: Stored separately for confidence interval computation
+
+## Report Versions
+
+| Version | Description |
+|---------|-------------|
+| **v1** | Original schema. `animationSmoothness` (always null), no coverage tracking, no diagnostics, missing data → 0 score. |
+| **v2** (current) | `frameDropRate` replaces `animationSmoothness`. `inpProxy` replaces always-null INP. Coverage penalty, diagnostics, per-run artifact. Weight redistribution for missing categories. |
+
+### What Changed in v2
+
+- **`animationSmoothness`** → **`frameDropRate`**: RAF-cadence based measurement (0–100%, lower is better) that actually works, replacing the always-null FPS lookup.
+- **`inp`** → **`inpProxy`**: Playwright-based event-to-paint delay proxy metric, replacing the always-null Lighthouse INP.
+- **`keyboardNavigationScore`**: Fixed Lighthouse audit IDs to use real audit names. Falls back to overall accessibility score.
+- **Error rate**: Now properly computed as `consoleErrors / totalConsoleMessages` instead of `errors / errors`.
+- **Layout shift**: `0` is preserved as a valid value (good score) instead of being set to `null`.
+- **Scoring**: Categories with no data get their weight redistributed (not scored as 0). A configurable coverage penalty prevents incomplete pages from scoring artificially high.
+- **Coverage**: Per-page and global coverage summaries included in report.
+- **Diagnostics**: Per-page stage statuses (success/failure + reason) for lighthouse, playwright, crux.
+- **Per-run data**: Companion `*-runs.json` artifact stores per-run values for CI computation.
+- **Cookie/modal dismissal**: Generic handler for common consent banners before interactions.
 
 ## How the System Works
 
 ### Architecture Overview
 
-The benchmarking system follows a multi-stage pipeline:
-
 1. **Data Collection** → 2. **Metrics Normalization** → 3. **Composite Scoring** → 4. **Ranking Comparison** → 5. **Report Generation**
 
 ### Stage 1: Data Collection
 
-The system collects metrics from multiple sources:
-
 #### Lighthouse Integration
-- **Purpose**: Captures Core Web Vitals (LCP, FID/INP, CLS) and accessibility metrics
-- **How it works**: 
-  - Launches Chrome browser programmatically
-  - Runs Lighthouse audits on each configured page
-  - Extracts performance, accessibility, and CWV metrics
-  - Stores raw Lighthouse results for reference
-- **Metrics collected**:
-  - LCP (Largest Contentful Paint): Time to render main content
-  - FID (First Input Delay): Deprecated, replaced by INP
-  - INP (Interaction to Next Paint): Responsiveness of user interactions
-  - CLS (Cumulative Layout Shift): Visual stability score
-  - Accessibility scores: WCAG compliance, ARIA implementation, keyboard navigation
+- Captures Core Web Vitals (LCP, CLS) and accessibility metrics
+- Extracts keyboard navigation, screen reader, and color contrast scores from specific audits
 
 #### Playwright Integration
-- **Purpose**: Captures interaction stability and reliability metrics
-- **How it works**:
-  - Launches Chromium browser (local, no API needed)
-  - Navigates to each page and performs automated interactions
-  - Measures layout shifts during interactions
-  - Captures network requests and console errors
-  - Performs multiple test runs for reliability
-- **Metrics collected**:
-  - Layout shifts during interactions: CLS measured while user interacts
-  - Input responsiveness: Time from user input to visual feedback
-  - Animation smoothness: FPS during animations
-  - Interaction latency: Time between user action and system response
-  - Error rates: Percentage of console errors vs. total messages
-  - Network failure recovery: Ability to recover from failed requests
-  - Resource load success rate: Percentage of successful resource loads
-  - Service worker availability: Offline capability indicator
+- Navigates to each page and performs automated interactions
+- **Cookie/modal dismissal**: Tries common cookie banner selectors before interactions
+- **INP Proxy**: Measures event dispatch → next paint delay via `requestAnimationFrame`
+- **Frame Drop Rate**: Samples RAF cadence during interactions, reports dropped frame percentage
+- **Per-run storage**: Each run's metrics are preserved for statistical analysis
+- **Interaction failure tracking**: Records explicit reasons when interactions fail
 
 #### CrUX Integration (Optional)
-- **Purpose**: Collects real user metrics from Google's Chrome User Experience Report
-- **How it works**:
-  - Queries Google's CrUX API (requires API key)
-  - Fetches real user data (75th percentile values)
-  - Merges with lab metrics for validation
-- **Note**: Not all sites have CrUX data available
+- Fetches real user data from Google's Chrome User Experience Report API
+- Requires `CRUX_API_KEY` environment variable
 
 ### Stage 2: Metrics Normalization
 
-Raw metrics from different tools are normalized to a unified format:
-
-- **Unit conversion**: All metrics converted to common units (milliseconds, percentages, scores)
-- **Scale normalization**: Metrics normalized to 0-100 scale for comparison
-- **Missing data handling**: Missing metrics set to `null` (handled gracefully in scoring)
-- **Data validation**: Checks for data completeness and flags missing critical metrics
-
-**Normalization rules**:
-- CWV metrics: Inverse normalization (lower is better → higher score is better)
-  - LCP: 0-4000ms → 0-100 score (inverse)
-  - FID/INP: 0-300ms (FID) or 0-500ms (INP) → 0-100 score (inverse)
-  - CLS: 0-0.25 → 0-100 score (inverse)
-- Interaction stability: Average of normalized sub-metrics
-- Accessibility: Direct score (already 0-100)
-- Reliability: Percentage-based (0-100)
+Metrics are normalized to 0–100 scores. The normalizer uses **available-metric mean**: if a category has 2 out of 4 metrics, it averages only the 2 that exist instead of penalizing with zeros.
 
 ### Stage 3: Composite Scoring
 
-Category scores are calculated and combined using weighted formula:
-
 ```
-Composite UX Score = 
-  (CWV_Score × 0.30) +
-  (Interaction_Stability_Score × 0.25) +
-  (Accessibility_Score × 0.25) +
-  (Reliability_Score × 0.20)
+rawComposite = weighted average of available categories (weight redistribution)
+coverageFactor = (coveragePercentage) ^ coveragePenaltyFactor
+composite = rawComposite × coverageFactor
 ```
 
 **Default weights** (configurable in `config/benchmark.json`):
-- CWV: 30% - Foundational web performance metrics
-- Interaction Stability: 25% - User interaction quality
-- Accessibility: 25% - Inclusive design compliance
-- Reliability: 20% - Error handling and robustness
+- CWV: 30%
+- Interaction Stability: 25%
+- Accessibility: 25%
+- Reliability: 20%
 
-Each category score is first normalized to 0-100, then weighted and summed.
+**Coverage penalty** (`coveragePenaltyFactor`, default 0.5):
+- `0` = no penalty
+- `0.5` = moderate (square root)
+- `1.0` = linear
+
+When a category has zero available metrics, its weight is redistributed proportionally among categories that have data.
 
 ### Stage 4: Ranking Comparison
 
-The system creates two rankings:
-
-1. **CWV-only ranking**: Pages ranked by CWV score alone (LCP, FID/INP, CLS)
-2. **Composite ranking**: Pages ranked by composite UX score
-
-**Rank flip detection**:
-- Compares positions between the two rankings
-- Identifies pages that rank differently
-- Calculates rank change magnitude (e.g., +3 positions, -2 positions)
-- Sorts rank flips by absolute change (largest flips first)
-
-**Statistical analysis**:
-- Correlation coefficient between CWV scores and composite scores
-- Rank flip count: Number of pages with different rankings
-- Rank flip percentage: Percentage of pages that flipped ranks
+Creates CWV-only and composite rankings, identifies rank flips, and computes correlation.
 
 ### Stage 5: Report Generation
 
-Final JSON reports are generated with:
-
-- **Metadata**: Timestamp, version, list of pages analyzed
-- **Per-page data**: All metrics, normalized scores, and category scores
-- **Rankings**: CWV-only and composite rankings with scores
-- **Rank flips**: Detailed list of pages with rank changes
-- **Statistics**: Correlation, flip counts, and percentages
-
-Reports are saved to `data/reports/` with timestamp-based filenames.
+Outputs:
+- Main report JSON (`report-<timestamp>.json`)
+- Per-run artifact (`report-<timestamp>-runs.json`)
+- Console summary with coverage statistics
 
 ## Installation
 
@@ -140,31 +102,9 @@ npm install
 npx playwright install chromium
 ```
 
-Note: Playwright requires browser binaries. Run `npx playwright install chromium` after installing dependencies.
-
 ## Configuration
 
-### Pages Configuration (`config/pages.json`)
-
-Define the pages you want to benchmark:
-
-```json
-{
-  "pages": [
-    {
-      "id": "page-1",
-      "name": "E-commerce Product Page",
-      "url": "https://example.com/product",
-      "category": "ecommerce",
-      "expectedPattern": "product-detail"
-    }
-  ]
-}
-```
-
 ### Benchmark Configuration (`config/benchmark.json`)
-
-Configure tool settings and composite weights:
 
 ```json
 {
@@ -175,243 +115,186 @@ Configure tool settings and composite weights:
   },
   "playwright": {
     "headless": true,
-    "runs": 3,
+    "runs": 5,
     "timeout": 30000,
-    "viewport": {
-      "width": 1920,
-      "height": 1080
-    }
+    "viewport": { "width": 1920, "height": 1080 }
   },
   "compositeWeights": {
     "cvv": 0.30,
     "interactionStability": 0.25,
     "accessibility": 0.25,
     "reliability": 0.20
-  }
+  },
+  "coveragePenaltyFactor": 0.5
 }
 ```
 
 ## Environment Variables
 
-- `CRUX_API_KEY`: Chrome UX Report API key (optional, for real user metrics)
-
-Note: Playwright runs locally and doesn't require any API keys or paid services.
+- `CRUX_API_KEY`: Chrome UX Report API key (optional)
 
 ## Usage
-
-### Run Benchmark
 
 ```bash
 # Benchmark all configured pages
 npm run benchmark
 
 # Benchmark specific page
-npm run benchmark -- --page page-1
+npm run benchmark -- --page wikipedia-web-performance
 
-# Use custom config
-npm run benchmark -- --config custom-config.json
-
-# Skip Playwright tests (faster, but less interaction/reliability data)
-npm run benchmark -- --skip-playwright
-
-# Skip CrUX collection
+# Skip CrUX collection (most common, no API key needed)
 npm run benchmark -- --skip-crux
+
+# Compare two reports
+npm run compare -- --baseline data/reports/report-v1.json --current data/reports/report-v2.json
+
+# Run tests
+npm test
 ```
 
-### Compare Reports
+## Report Schema (v2)
 
-```bash
-npm run compare -- --baseline data/reports/report-1.json --current data/reports/report-2.json
-```
-
-## Understanding Reports
-
-### Report Structure
-
-Reports are generated in JSON format in `data/reports/` with the following structure:
+### Top-Level Structure
 
 ```json
 {
   "metadata": {
-    "timestamp": "2026-01-04T19:03:08.384Z",
-    "version": "1.0.0",
-    "pages": ["page-1", "page-2", "page-3"]
+    "timestamp": "2026-03-04T...",
+    "reportVersion": 2,
+    "toolVersion": "2.0.0",
+    "pages": ["page-1", "page-2"],
+    "config": {
+      "compositeWeights": { "cvv": 0.3, "interactionStability": 0.25, "accessibility": 0.25, "reliability": 0.2 },
+      "coveragePenaltyFactor": 0.5,
+      "playwrightRuns": 5
+    }
   },
-  "pages": [...],
-  "rankings": {...},
-  "statistics": {...}
+  "pages": [ /* PageBenchmark[] */ ],
+  "rankings": {
+    "cvv": [ /* Ranking[] */ ],
+    "composite": [ /* Ranking[] */ ],
+    "rankFlips": [ /* RankFlip[] */ ]
+  },
+  "statistics": {
+    "correlation": 0.85,
+    "rankFlipCount": 12,
+    "rankFlipPercentage": 15.0
+  },
+  "coverageSummary": {
+    "totalPages": 80,
+    "pagesWithInteractionMetrics": 72,
+    "pagesWithReliabilityMetrics": 78,
+    "metricPopulation": {
+      "cvv.lcp": { "populated": 80, "total": 80, "percentage": 100 },
+      "cvv.inpProxy": { "populated": 65, "total": 80, "percentage": 81.25 },
+      "interactionStability.frameDropRate": { "populated": 78, "total": 80, "percentage": 97.5 }
+    },
+    "averageCoveragePercentage": 82.5
+  },
+  "runsArtifactPath": "data/reports/report-...-runs.json"
 }
 ```
 
-### Per-Page Metrics
-
-Each page entry contains:
-
-#### Core Web Vitals (cvv)
-- **lcp** (number | null): Largest Contentful Paint in milliseconds
-  - Good: < 2500ms, Needs improvement: 2500-4000ms, Poor: > 4000ms
-- **fid** (number | null): First Input Delay in milliseconds (deprecated)
-  - Good: < 100ms, Needs improvement: 100-300ms, Poor: > 300ms
-- **inp** (number | null): Interaction to Next Paint in milliseconds
-  - Good: < 200ms, Needs improvement: 200-500ms, Poor: > 500ms
-- **cls** (number | null): Cumulative Layout Shift (0-1 scale, lower is better)
-  - Good: < 0.1, Needs improvement: 0.1-0.25, Poor: > 0.25
-
-#### Interaction Stability (interactionStability)
-- **layoutShiftDuringInteractions** (number | null): CLS measured during user interactions
-- **inputResponsiveness** (number | null): Time from input to visual feedback (ms)
-- **animationSmoothness** (number | null): FPS during animations (0-60)
-- **interactionLatency** (number | null): Time between user action and response (ms)
-
-#### Accessibility (accessibility)
-- **wcagComplianceScore** (number | null): Overall WCAG compliance (0-100)
-- **keyboardNavigationScore** (number | null): Keyboard accessibility score (0-100)
-- **screenReaderCompatibility** (number | null): ARIA/accessibility implementation (0-100)
-- **colorContrastRatio** (number | null): Color contrast compliance (0-100)
-
-#### Reliability (reliability)
-- **errorRate** (number | null): Percentage of console errors (0-100, lower is better)
-- **networkFailureRecovery** (number | null): Recovery rate from failed requests (0-100, higher is better)
-- **resourceLoadSuccessRate** (number | null): Percentage of successful resource loads (0-100)
-- **serviceWorkerAvailable** (boolean | null): Whether service worker is registered
-
-#### Scores
-
-Each page has normalized scores (0-100 scale, higher is better):
-
-- **cvv**: Composite CWV score (LCP, FID/INP, CLS combined)
-- **interactionStability**: Interaction stability composite score
-- **accessibility**: Accessibility composite score
-- **reliability**: Reliability composite score
-- **composite**: Overall UX score (weighted combination of all categories)
-
-### Rankings
-
-The report includes two rankings:
-
-#### CWV Rankings (`rankings.cvv`)
-Pages ranked by CWV score alone (traditional Core Web Vitals approach):
-```json
-{
-  "pageId": "page-1",
-  "score": 71.77,
-  "rank": 1
-}
-```
-
-#### Composite Rankings (`rankings.composite`)
-Pages ranked by composite UX score (includes all metrics):
-```json
-{
-  "pageId": "page-1",
-  "score": 76.07,
-  "rank": 1
-}
-```
-
-### Rank Flips
-
-The `rankings.rankFlips` array identifies pages with different rankings:
+### Page Object
 
 ```json
 {
-  "pageId": "page-2",
-  "cvvRank": 3,
-  "compositeRank": 1,
-  "rankChange": 2
+  "pageId": "wikipedia-web-performance",
+  "url": "https://en.wikipedia.org/wiki/Web_performance",
+  "metrics": {
+    "cvv": {
+      "lcp": 1234.5,
+      "fid": null,
+      "inp": null,
+      "cls": 0.02,
+      "inpProxy": 45.3
+    },
+    "interactionStability": {
+      "layoutShiftDuringInteractions": 0.01,
+      "inputResponsiveness": 120,
+      "frameDropRate": 5.2,
+      "interactionLatency": 120
+    },
+    "accessibility": {
+      "wcagComplianceScore": 92,
+      "keyboardNavigationScore": 88,
+      "screenReaderCompatibility": 95,
+      "colorContrastRatio": 100
+    },
+    "reliability": {
+      "errorRate": 1.5,
+      "networkFailureRecovery": 100,
+      "resourceLoadSuccessRate": 98.5,
+      "serviceWorkerAvailable": false
+    }
+  },
+  "scores": {
+    "cvv": 85.2,
+    "interactionStability": 78.5,
+    "accessibility": 93.75,
+    "reliability": 74.25,
+    "composite": 77.8,
+    "rawComposite": 83.1,
+    "coverageFactor": 0.94
+  },
+  "diagnostics": {
+    "stages": [
+      { "stage": "lighthouse", "success": true, "durationMs": 15000 },
+      { "stage": "playwright", "success": true, "durationMs": 45000 },
+      { "stage": "crux", "success": false, "failureReason": "No CrUX data available", "durationMs": 200 }
+    ],
+    "coverage": { "..." : "same as coverage below" }
+  },
+  "coverage": {
+    "overall": { "available": 14, "expected": 15, "percentage": 93.3, "missing": ["reliability.serviceWorkerAvailable"] },
+    "cvv": { "available": 3, "expected": 3, "percentage": 100, "missing": [] },
+    "interactionStability": { "available": 4, "expected": 4, "percentage": 100, "missing": [] },
+    "accessibility": { "available": 4, "expected": 4, "percentage": 100, "missing": [] },
+    "reliability": { "available": 3, "expected": 4, "percentage": 75, "missing": ["reliability.serviceWorkerAvailable"] }
+  }
 }
 ```
 
-- **cvvRank**: Position in CWV-only ranking
-- **compositeRank**: Position in composite ranking
-- **rankChange**: Difference (cvvRank - compositeRank)
-  - Positive: Ranked better in composite (improved)
-  - Negative: Ranked worse in composite (declined)
-  - Zero: Same rank in both (no flip)
+## How Missing Data Is Handled
 
-**Example interpretation**:
-- `rankChange: +2` means the page ranked 2 positions better in composite ranking
-- This indicates the page performs well in accessibility/reliability/interaction stability, but may have lower CWV scores
+| Situation | v1 Behavior | v2 Behavior |
+|-----------|-------------|-------------|
+| All metrics null in a category | Score = 0, dragging composite down | Weight redistributed to other categories |
+| Some metrics null in a category | Mean of available + zeros | Mean of available only (no zeros) |
+| INP not measurable | `null` everywhere | `inpProxy` from Playwright (event→paint delay) |
+| Animation smoothness | `null` everywhere (no FPS in CDP) | `frameDropRate` from RAF cadence sampling |
+| Keyboard navigation | `null` (wrong Lighthouse audit IDs) | Fixed audit IDs + fallback to a11y category score |
+| Error rate | Binary 0%/100% (errors÷errors) | Proper ratio (errors÷totalMessages) |
+| Layout shift = 0 | Treated as null (missing) | Preserved as 0 (good score) |
+| Low coverage overall | Not visible | Coverage penalty reduces composite; coverage % shown |
 
-### Statistics
+## How to Verify Improvements
 
-The `statistics` object provides summary metrics:
+After running a benchmark:
 
-- **correlation** (number): Pearson correlation coefficient between CWV scores and composite scores
-  - Range: -1 to 1
-  - Close to 1: Strong positive correlation (CWV predicts composite well)
-  - Close to 0: Weak correlation (CWV doesn't predict composite well)
-  - Close to -1: Strong negative correlation (inverse relationship)
-- **rankFlipCount** (number): Number of pages with different rankings
-- **rankFlipPercentage** (number): Percentage of pages that flipped ranks
-
-**Interpretation**:
-- **High correlation (> 0.7)**: CWV-only ranking is a good predictor of overall UX
-- **Low correlation (< 0.5)**: CWV doesn't capture the full picture; composite ranking reveals different winners
-- **High rank flip percentage (> 50%)**: Many pages rank differently, indicating CWV misses important UX factors
-
-### Missing Data
-
-Some metrics may be `null` in reports. This is normal and expected:
-
-- **FID/INP null**: No user interactions occurred during Lighthouse run
-- **Input responsiveness null**: No successful interactions in Playwright tests
-- **Animation smoothness null**: No animations detected or measured
-- **Error rate null**: No console messages were captured
-- **CLS = 0**: No layout shifts occurred (this is good!)
-
-The system handles missing metrics by:
-- Using available metrics for scoring
-- Setting missing metrics to `null` (treated as 0 in normalization)
-- Warning about incomplete data but continuing with available metrics
-
-## Composite Scoring
-
-The composite UX score is calculated as:
-
-```
-Composite UX Score = 
-  (CWV_Score × 0.30) +
-  (Interaction_Stability_Score × 0.25) +
-  (Accessibility_Score × 0.25) +
-  (Reliability_Score × 0.20)
+```bash
+npm run benchmark -- --skip-crux
 ```
 
-Each category score is normalized to 0-100 scale before weighting.
+Check the generated report for:
 
-### Why This Formula?
+1. **`inpProxy` populated**: `jq '.pages[] | .metrics.cvv.inpProxy' report.json` — most pages should have a number, not null.
+2. **`frameDropRate` populated**: `jq '.pages[] | .metrics.interactionStability.frameDropRate' report.json` — should have numbers.
+3. **No zero-scored categories from missing data**: `jq '.pages[] | select(.scores.interactionStability == 0) | .pageId' report.json` — if any, check `coverage.interactionStability.available == 0` to confirm it's genuinely no data (weight gets redistributed).
+4. **Coverage summary**: `jq '.coverageSummary' report.json` — shows per-metric population percentages.
+5. **Diagnostics**: `jq '.pages[0].diagnostics' report.json` — shows stage success/failure with reasons.
+6. **Per-run data**: Check companion `*-runs.json` file exists with per-run arrays.
 
-The weights reflect the relative importance of each category:
+## Running Tests
 
-1. **CWV (30%)**: Foundation of web performance, widely recognized
-2. **Interaction Stability (25%)**: Critical for user engagement and perceived performance
-3. **Accessibility (25%)**: Essential for inclusive design and legal compliance
-4. **Reliability (20%)**: Important but less directly visible to users
+```bash
+npm test
+```
 
-These weights are configurable in `config/benchmark.json` and can be adjusted based on your research needs or use case.
-
-## Research Use Cases
-
-This tool is designed for research purposes, particularly:
-
-- **Comparing CWV-only vs. composite UX rankings**: Demonstrates when CWV doesn't capture the full picture
-- **Identifying rank flips**: Shows pages that perform differently in composite vs. CWV-only rankings
-- **Statistical analysis**: Correlation coefficients help quantify the relationship between CWV and overall UX
-- **Academic research**: Generate data for papers (e.g., IEEE Access) showing CWV limitations
-
-### Example Research Questions
-
-1. **Do CWV winners also win in composite UX?**
-   - Check correlation coefficient
-   - Low correlation suggests CWV misses important factors
-
-2. **Which pages rank differently in composite vs. CWV-only?**
-   - Review `rankFlips` array
-   - Pages with large `rankChange` values are interesting case studies
-
-3. **How much does accessibility/reliability affect overall UX?**
-   - Compare CWV scores vs. composite scores
-   - Large differences indicate non-CWV factors are significant
+Tests cover:
+- Normalizer: available-metric mean, insufficient data marking, metric priority (inpProxy > inp > fid)
+- Composite engine: weight redistribution, coverage penalty, edge cases
+- Metrics collector: coverage computation, missing field identification
 
 ## License
 
