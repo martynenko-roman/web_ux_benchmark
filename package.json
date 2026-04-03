@@ -13,6 +13,7 @@
     "benchmark": "tsx src/cli/index.ts benchmark",
     "report": "tsx src/cli/index.ts report",
     "compare": "tsx src/cli/index.ts compare",
+    "analyze": "tsx scripts/analyze-report.ts",
     "test": "vitest run"
   },
   "keywords": [
