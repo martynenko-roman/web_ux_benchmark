@@ -10,7 +10,28 @@
  *   tsx scripts/analyze-report.ts [path/to/report.json]
  *
  * If no path is given, the latest report-*.json in data/reports/ is used.
- * Outputs JSON to stdout with three tables: rankingComparison, weightSensitivity, and categoryAblation
+ * Writes JSON to data/summary/<report-name>-analysis.json and prints to stdout.
+ *
+ * ── Statistical methods ──────────────────────────────────────────────────────
+ *
+ * Pearson r
+ *   Standard product-moment formula. P-value from two-tailed t-test:
+ *     t = r √(n−2) / √(1−r²),  df = n−2
+ *   evaluated via the regularized incomplete beta function (continued fraction,
+ *   Lentz algorithm) for the Student-t CDF.
+ *   95% CI via Fisher z-transform: z = atanh(r), SE = 1/√(n−3),
+ *   bounds = tanh(z ± 1.96·SE).
+ *
+ * Spearman ρ
+ *   Pearson r computed on mid-ranks (average-rank ties). P-value uses the same
+ *   t-test approximation as Pearson (valid for n ≥ 10). 95% CI via Fisher
+ *   z-transform with SE = 1/√(n−3).
+ *
+ * Kendall τ-b
+ *   τ_b = (C−D) / √((n₀−tₓ)(n₀−tᵧ)) where n₀ = n(n−1)/2, C = concordant
+ *   pairs, D = discordant pairs, tₓ/tᵧ = ties in x/y. P-value via normal
+ *   approximation: z = τ / √(2(2n+5) / (9n(n−1))). 95% CI: τ ± 1.96·SE
+ *   with the same SE.
  */
 
 import { readFileSync, readdirSync, writeFileSync, mkdirSync } from "node:fs";

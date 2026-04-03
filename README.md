@@ -285,6 +285,44 @@ Check the generated report for:
 5. **Diagnostics**: `jq '.pages[0].diagnostics' report.json` — shows stage success/failure with reasons.
 6. **Per-run data**: Check companion `*-runs.json` file exists with per-run arrays.
 
+## Statistical Analysis
+
+The analysis script reads a benchmark report and produces summary statistics. Three steps:
+
+```bash
+# 1. Generate (or reuse) a benchmark report
+npm run benchmark -- --skip-crux
+#    → data/reports/report-<timestamp>.json
+
+# 2. Run the analysis script (uses the latest report by default)
+npm run analyze
+#    → data/summary/report-<timestamp>-analysis.json
+
+# 3. Or point it at a specific report
+npm run analyze -- data/reports/report-2026-03-05T06-42-16-058Z.json
+```
+
+The output JSON contains three sections:
+
+| Output key | Contents |
+|---|---|
+| `rankingComparison` | Pearson / Spearman / Kendall correlations with 95% CIs and p-values, rank flip count, median and max \|Δrank\| |
+| `weightSensitivity` | Spearman ρ, rank flip %, and median \|Δrank\| for ±10% weight perturbations of each category |
+| `categoryAblation` | Same metrics when each category is removed entirely |
+
+### Statistical methods
+
+| Statistic | Method | Reference |
+|---|---|---|
+| Pearson *r* p-value | Two-tailed *t*-test: *t* = *r* √(*n*−2) / √(1−*r*²), df = *n*−2. CDF evaluated via regularized incomplete beta (continued fraction / Lentz). | — |
+| Pearson *r* 95% CI | Fisher z-transform: *z* = atanh(*r*), SE = 1/√(*n*−3), bounds = tanh(*z* ± 1.96·SE). | Fisher (1921) |
+| Spearman *ρ* p-value | Same *t*-test approximation as Pearson, applied to mid-ranks. | — |
+| Spearman *ρ* 95% CI | Fisher z-transform with SE = 1/√(*n*−3). | Fieller *et al.* (1957) |
+| Kendall *τ*-b p-value | Normal approximation: *z* = *τ* / √(2(2*n*+5) / (9*n*(*n*−1))). | Kendall (1938) |
+| Kendall *τ*-b 95% CI | *τ* ± 1.96·SE with the same variance formula. | — |
+
+All computations are implemented from scratch in `scripts/analyze-report.ts` with no external statistics dependencies.
+
 ## Running Tests
 
 ```bash
