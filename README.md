@@ -1,339 +1,177 @@
 # Web UX Benchmark
 
-Benchmarking Web UX Beyond Core Web Vitals
+Source code and archived observations for studying automated web-quality measurements, missing-data policies, and ranking behavior.
 
-A comprehensive benchmarking system that evaluates web UX using a composite framework extending beyond Core Web Vitals (CWV). The system connects lab metrics to real user impact, enabling controlled experiments on representative pages/patterns to demonstrate rank flips between "CWV winners" and "UX winners."
+This repository contains the **legacy benchmark implementation** and the March 2026 website archive. Its composite is a configurable technical score. The archive does not establish that the score measures user satisfaction, overall user experience, accessibility conformance, or successful task completion.
 
-## Features
+## Relationship to the manuscript
 
-- **Core Web Vitals**: LCP, CLS, and INP proxy measurement
-- **Interaction Stability**: Layout shifts during interactions, input responsiveness, frame drop rate, interaction latency
-- **Accessibility**: WCAG compliance, keyboard navigation, screen reader compatibility, color contrast
-- **Reliability**: Error rates, network failure recovery, resource load success
-- **Composite Scoring**: Unified UX score with coverage-aware weighting
-- **Ranking Comparison**: Identify rank flips between CWV-only and composite rankings
-- **Coverage Tracking**: Per-page and global metric coverage diagnostics
-- **Per-Run Data**: Stored separately for confidence interval computation
+The revised manuscript, **Measurement Coverage and Timing Semantics in Automated Web Quality Rankings**, uses this repository as evidence for an implementation audit and a retrospective reanalysis.
 
-## Report Versions
+The inspected source snapshot is [`c5ad219de2074ac51a84824b032e653b8b8c0a8d`](https://github.com/martynenko-roman/web_ux_benchmark/tree/c5ad219de2074ac51a84824b032e653b8b8c0a8d). The March 5 report identifies report schema 2 and tool version 2.0.0, but does not identify the generating Git commit. The inspected snapshot must therefore be distinguished from the unknown historical generating revision. The package and CLI still declare version 1.0.0; these version labels are not interchangeable.
 
-| Version | Description |
-|---------|-------------|
-| **v1** | Original schema. `animationSmoothness` (always null), no coverage tracking, no diagnostics, missing data → 0 score. |
-| **v2** (current) | `frameDropRate` replaces `animationSmoothness`. `inpProxy` replaces always-null INP. Coverage penalty, diagnostics, per-run artifact. Weight redistribution for missing categories. |
+The revised manuscript makes three uses of evidence:
 
-### What Changed in v2
-
-- **`animationSmoothness`** → **`frameDropRate`**: RAF-cadence based measurement (0–100%, lower is better) that actually works, replacing the always-null FPS lookup.
-- **`inp`** → **`inpProxy`**: Playwright-based event-to-paint delay proxy metric, replacing the always-null Lighthouse INP.
-- **`keyboardNavigationScore`**: Fixed Lighthouse audit IDs to use real audit names. Falls back to overall accessibility score.
-- **Error rate**: Now properly computed as `consoleErrors / totalConsoleMessages` instead of `errors / errors`.
-- **Layout shift**: `0` is preserved as a valid value (good score) instead of being set to `null`.
-- **Scoring**: Categories with no data get their weight redistributed (not scored as 0). A configurable coverage penalty prevents incomplete pages from scoring artificially high.
-- **Coverage**: Per-page and global coverage summaries included in report.
-- **Diagnostics**: Per-page stage statuses (success/failure + reason) for lighthouse, playwright, crux.
-- **Per-run data**: Companion `*-runs.json` artifact stores per-run values for CI computation.
-- **Cookie/modal dismissal**: Generic handler for common consent banners before interactions.
-
-## How the System Works
-
-### Architecture Overview
-
-1. **Data Collection** → 2. **Metrics Normalization** → 3. **Composite Scoring** → 4. **Ranking Comparison** → 5. **Report Generation**
-
-### Stage 1: Data Collection
-
-#### Lighthouse Integration
-- Captures Core Web Vitals (LCP, CLS) and accessibility metrics
-- Extracts keyboard navigation, screen reader, and color contrast scores from specific audits
-
-#### Playwright Integration
-- Navigates to each page and performs automated interactions
-- **Cookie/modal dismissal**: Tries common cookie banner selectors before interactions
-- **INP Proxy**: Measures event dispatch → next paint delay via `requestAnimationFrame`
-- **Frame Drop Rate**: Samples RAF cadence during interactions, reports dropped frame percentage
-- **Per-run storage**: Each run's metrics are preserved for statistical analysis
-- **Interaction failure tracking**: Records explicit reasons when interactions fail
-
-#### CrUX Integration (Optional)
-- Fetches real user data from Google's Chrome User Experience Report API
-- Requires `CRUX_API_KEY` environment variable
-
-### Stage 2: Metrics Normalization
-
-Metrics are normalized to 0–100 scores. The normalizer uses **available-metric mean**: if a category has 2 out of 4 metrics, it averages only the 2 that exist instead of penalizing with zeros.
-
-### Stage 3: Composite Scoring
-
-```
-rawComposite = weighted average of available categories (weight redistribution)
-coverageFactor = (coveragePercentage) ^ coveragePenaltyFactor
-composite = rawComposite × coverageFactor
-```
-
-**Default weights** (configurable in `config/benchmark.json`):
-- CWV: 30%
-- Interaction Stability: 25%
-- Accessibility: 25%
-- Reliability: 20%
-
-**Coverage penalty** (`coveragePenaltyFactor`, default 0.5):
-- `0` = no penalty
-- `0.5` = moderate (square root)
-- `1.0` = linear
-
-When a category has zero available metrics, its weight is redistributed proportionally among categories that have data.
-
-### Stage 4: Ranking Comparison
-
-Creates CWV-only and composite rankings, identifies rank flips, and computes correlation.
-
-### Stage 5: Report Generation
-
-Outputs:
-- Main report JSON (`report-<timestamp>.json`)
-- Per-run artifact (`report-<timestamp>-runs.json`)
-- Console summary with coverage statistics
-
-## Installation
-
-```bash
-npm install
-npx playwright install chromium
-```
-
-## Configuration
-
-### Benchmark Configuration (`config/benchmark.json`)
-
-```json
-{
-  "lighthouse": {
-    "preset": "desktop",
-    "categories": ["performance", "accessibility"],
-    "throttling": "default"
-  },
-  "playwright": {
-    "headless": true,
-    "runs": 5,
-    "timeout": 30000,
-    "viewport": { "width": 1920, "height": 1080 }
-  },
-  "compositeWeights": {
-    "cvv": 0.30,
-    "interactionStability": 0.25,
-    "accessibility": 0.25,
-    "reliability": 0.20
-  },
-  "coveragePenaltyFactor": 0.5
-}
-```
-
-## Environment Variables
-
-- `CRUX_API_KEY`: Chrome UX Report API key (optional)
-
-## Usage
-
-```bash
-# Benchmark all configured pages
-npm run benchmark
-
-# Benchmark specific page
-npm run benchmark -- --page wikipedia-web-performance
-
-# Skip CrUX collection (most common, no API key needed)
-npm run benchmark -- --skip-crux
-
-# Compare two reports
-npm run compare -- --baseline data/reports/report-v1.json --current data/reports/report-v2.json
-
-# Run tests
-npm test
-```
-
-## Report Schema (v2)
-
-### Top-Level Structure
-
-```json
-{
-  "metadata": {
-    "timestamp": "2026-03-04T...",
-    "reportVersion": 2,
-    "toolVersion": "2.0.0",
-    "pages": ["page-1", "page-2"],
-    "config": {
-      "compositeWeights": { "cvv": 0.3, "interactionStability": 0.25, "accessibility": 0.25, "reliability": 0.2 },
-      "coveragePenaltyFactor": 0.5,
-      "playwrightRuns": 5
-    }
-  },
-  "pages": [ /* PageBenchmark[] */ ],
-  "rankings": {
-    "cvv": [ /* Ranking[] */ ],
-    "composite": [ /* Ranking[] */ ],
-    "rankFlips": [ /* RankFlip[] */ ]
-  },
-  "statistics": {
-    "correlation": 0.85,
-    "rankFlipCount": 12,
-    "rankFlipPercentage": 15.0
-  },
-  "coverageSummary": {
-    "totalPages": 80,
-    "pagesWithInteractionMetrics": 72,
-    "pagesWithReliabilityMetrics": 78,
-    "metricPopulation": {
-      "cvv.lcp": { "populated": 80, "total": 80, "percentage": 100 },
-      "cvv.inpProxy": { "populated": 65, "total": 80, "percentage": 81.25 },
-      "interactionStability.frameDropRate": { "populated": 78, "total": 80, "percentage": 97.5 }
-    },
-    "averageCoveragePercentage": 82.5
-  },
-  "runsArtifactPath": "data/reports/report-...-runs.json"
-}
-```
-
-### Page Object
-
-```json
-{
-  "pageId": "wikipedia-web-performance",
-  "url": "https://en.wikipedia.org/wiki/Web_performance",
-  "metrics": {
-    "cvv": {
-      "lcp": 1234.5,
-      "fid": null,
-      "inp": null,
-      "cls": 0.02,
-      "inpProxy": 45.3
-    },
-    "interactionStability": {
-      "layoutShiftDuringInteractions": 0.01,
-      "inputResponsiveness": 120,
-      "frameDropRate": 5.2,
-      "interactionLatency": 120
-    },
-    "accessibility": {
-      "wcagComplianceScore": 92,
-      "keyboardNavigationScore": 88,
-      "screenReaderCompatibility": 95,
-      "colorContrastRatio": 100
-    },
-    "reliability": {
-      "errorRate": 1.5,
-      "networkFailureRecovery": 100,
-      "resourceLoadSuccessRate": 98.5,
-      "serviceWorkerAvailable": false
-    }
-  },
-  "scores": {
-    "cvv": 85.2,
-    "interactionStability": 78.5,
-    "accessibility": 93.75,
-    "reliability": 74.25,
-    "composite": 77.8,
-    "rawComposite": 83.1,
-    "coverageFactor": 0.94
-  },
-  "diagnostics": {
-    "stages": [
-      { "stage": "lighthouse", "success": true, "durationMs": 15000 },
-      { "stage": "playwright", "success": true, "durationMs": 45000 },
-      { "stage": "crux", "success": false, "failureReason": "No CrUX data available", "durationMs": 200 }
-    ],
-    "coverage": { "..." : "same as coverage below" }
-  },
-  "coverage": {
-    "overall": { "available": 14, "expected": 15, "percentage": 93.3, "missing": ["reliability.serviceWorkerAvailable"] },
-    "cvv": { "available": 3, "expected": 3, "percentage": 100, "missing": [] },
-    "interactionStability": { "available": 4, "expected": 4, "percentage": 100, "missing": [] },
-    "accessibility": { "available": 4, "expected": 4, "percentage": 100, "missing": [] },
-    "reliability": { "available": 3, "expected": 4, "percentage": 75, "missing": ["reliability.serviceWorkerAvailable"] }
-  }
-}
-```
-
-## How Missing Data Is Handled
-
-| Situation | v1 Behavior | v2 Behavior |
-|-----------|-------------|-------------|
-| All metrics null in a category | Score = 0, dragging composite down | Weight redistributed to other categories |
-| Some metrics null in a category | Mean of available + zeros | Mean of available only (no zeros) |
-| INP not measurable | `null` everywhere | `inpProxy` from Playwright (event→paint delay) |
-| Animation smoothness | `null` everywhere (no FPS in CDP) | `frameDropRate` from RAF cadence sampling |
-| Keyboard navigation | `null` (wrong Lighthouse audit IDs) | Fixed audit IDs + fallback to a11y category score |
-| Error rate | Binary 0%/100% (errors÷errors) | Proper ratio (errors÷totalMessages) |
-| Layout shift = 0 | Treated as null (missing) | Preserved as 0 (good score) |
-| Low coverage overall | Not visible | Coverage penalty reduces composite; coverage % shown |
-
-## How to Verify Improvements
-
-After running a benchmark:
-
-```bash
-npm run benchmark -- --skip-crux
-```
-
-Check the generated report for:
-
-1. **`inpProxy` populated**: `jq '.pages[] | .metrics.cvv.inpProxy' report.json` — most pages should have a number, not null.
-2. **`frameDropRate` populated**: `jq '.pages[] | .metrics.interactionStability.frameDropRate' report.json` — should have numbers.
-3. **No zero-scored categories from missing data**: `jq '.pages[] | select(.scores.interactionStability == 0) | .pageId' report.json` — if any, check `coverage.interactionStability.available == 0` to confirm it's genuinely no data (weight gets redistributed).
-4. **Coverage summary**: `jq '.coverageSummary' report.json` — shows per-metric population percentages.
-5. **Diagnostics**: `jq '.pages[0].diagnostics' report.json` — shows stage success/failure with reasons.
-6. **Per-run data**: Check companion `*-runs.json` file exists with per-run arrays.
-
-## Statistical Analysis
-
-The analysis script reads a benchmark report and produces summary statistics. Three steps:
-
-```bash
-# 1. Generate (or reuse) a benchmark report
-npm run benchmark -- --skip-crux
-#    → data/reports/report-<timestamp>.json
-
-# 2. Run the analysis script (uses the latest report by default)
-npm run analyze
-#    → data/summary/report-<timestamp>-analysis.json
-
-# 3. Or point it at a specific report
-npm run analyze -- data/reports/report-2026-03-05T06-42-16-058Z.json
-```
-
-The output JSON contains three sections:
-
-| Output key | Contents |
-|---|---|
-| `rankingComparison` | Pearson / Spearman / Kendall correlations with 95% CIs and p-values, rank flip count, median and max \|Δrank\| |
-| `weightSensitivity` | Spearman ρ, rank flip %, and median \|Δrank\| for ±10% weight perturbations of each category |
-| `categoryAblation` | Same metrics when each category is removed entirely |
-
-### Statistical methods
-
-| Statistic | Method | Reference |
+| Evidence | Location | Interpretation |
 |---|---|---|
-| Pearson *r* p-value | Two-tailed *t*-test: *t* = *r* √(*n*−2) / √(1−*r*²), df = *n*−2. CDF evaluated via regularized incomplete beta (continued fraction / Lentz). | — |
-| Pearson *r* 95% CI | Fisher z-transform: *z* = atanh(*r*), SE = 1/√(*n*−3), bounds = tanh(*z* ± 1.96·SE). | Fisher (1921) |
-| Spearman *ρ* p-value | Same *t*-test approximation as Pearson, applied to mid-ranks. | — |
-| Spearman *ρ* 95% CI | Fisher z-transform with SE = 1/√(*n*−3). | Fieller *et al.* (1957) |
-| Kendall *τ*-b p-value | Normal approximation: *z* = *τ* / √(2(2*n*+5) / (9*n*(*n*−1))). | Kendall (1938) |
-| Kendall *τ*-b 95% CI | *τ* ± 1.96·SE with the same variance formula. | — |
+| Historical collection and legacy analysis | `src/`, `scripts/`, `config/`, `public_data/` in this repository | Inspect the original implementation and reproduce the legacy summary. |
+| Eligibility-based reanalysis, sensitivity results, conditional bootstrap, and incomplete-score bounds | Accompanying manuscript supplement: `reanalyze.py`, `reanalysis.json`, eligibility tables, metric dictionary, and input hashes | Recompute the revised paper's results from the fixed archive. These files are not currently in this repository. |
+| New controlled browser experiment | Accompanying manuscript supplement: `controlled-validation/` | Examine the recorded protocol, fixture, collector, runtime metadata, and 103 logged observations. These files are not currently in this repository. |
 
-All computations are implemented from scratch in `scripts/analyze-report.ts` with no external statistics dependencies.
+Running `npm run analyze` reproduces the **legacy** analysis. It does not implement the revised paper's complete-evidence score, bounds, conditional bootstrap, or new experiment. The revised results require the accompanying supplement. No public release or archive DOI for that supplement is asserted here.
 
-## Running Tests
+## Archived data
 
-```bash
-npm test
+| File | Contents |
+|---|---|
+| [Main report](public_data/reports/report-2026-03-05T06-42-16-058Z.json) | 100 configured page entries, metrics, legacy scores, rankings, diagnostics, and coverage. |
+| [Run records](public_data/reports/report-2026-03-05T06-42-16-058Z-runs.json) | Five retained Playwright runs for each of 99 pages. This is not five repeated Lighthouse audits. |
+| [Legacy summary](public_data/summary/report-2026-03-05T06-42-16-058Z-analysis.json) | Ranking comparison, weight perturbations, and category ablation. |
+| [Page manifest](config/pages.json) | URLs, IDs, archetype labels, and expected patterns for the 100-page benchmark. |
+| [Benchmark configuration](config/benchmark.json) | Declared collection options and category weights. |
+
+SHA-256 hashes of the archived report bytes:
+
+```text
+Main report  f2ce990e1df5d2e410a9f7404d6d9b6c97e5ca56cac4a52aba02cfdc39758fa2
+Run records  834da1dcaf281aa560dee90d850eea7905c620a603b289316bed0c301fd0776f
 ```
 
-Tests cover:
-- Normalizer: available-metric mean, insufficient data marking, metric priority (inpProxy > inp > fid)
-- Composite engine: weight redistribution, coverage penalty, edge cases
-- Metrics collector: coverage computation, missing field identification
+The legacy summary reports Pearson correlation 0.309, Spearman correlation 0.382, Kendall tau-b 0.277, and 98 pages with a changed ordinal rank. The 98% figure counts pages that move at least one position; it is not a percentage of reversed page pairs or evidence that a composite ranking is closer to users' judgments. The archive's actual `inp` field is null for all 100 pages.
 
-## License
+The revised paper analyzes 60 eligible pages and excludes 40 with recorded reasons. Its Spearman correlation of 0.545 and 27.7% reversal among comparable page pairs come from the separate supplement; they must not be substituted into the preserved legacy report.
 
-Apache-2.0
+## Reproduce the legacy summary without collecting websites
+
+Use a recent supported Node.js installation compatible with the locked dependencies. Node.js **24.19.0** was used for the verification below. The lock includes Vite 7.3.1, which requires Node 20.19+ or 22.12+; very old Node versions are unsuitable.
+
+```sh
+git clone https://github.com/martynenko-roman/web_ux_benchmark.git
+cd web_ux_benchmark
+npm ci --ignore-scripts
+npm run analyze -- public_data/reports/report-2026-03-05T06-42-16-058Z.json
+```
+
+The generated summary is:
+
+```text
+data/summary/report-2026-03-05T06-42-16-058Z-analysis.json
+```
+
+Compare that output with the archived summary in `public_data/summary/`. Pass the report path explicitly: the script's default search uses `data/reports/`, whereas the committed historical report is in `public_data/reports/`.
+
+For an inspection of the exact source cited in the paper, use `git checkout c5ad219de2074ac51a84824b032e653b8b8c0a8d` after cloning. That immutable revision contains the earlier README; the present README corrects its descriptions without changing the historical code or data.
+
+## What the legacy fields actually measure
+
+Field names below are retained for schema compatibility. Their names sometimes imply stronger interpretations than their implementations support.
+
+| Field or group | Executable meaning and limitation |
+|---|---|
+| `cvv.lcp`, `cvv.cls` | Lighthouse load-audit observations. Recorded CLS is not a reconstructed full-session interaction experiment. |
+| `cvv.inpProxy` | Mean synthetic event-dispatch-to-animation-frame delay from Playwright. A requestAnimationFrame callback is not a verified paint timestamp. The proxy is not INP; its event set also includes scrolling. |
+| `inputResponsiveness`, `interactionLatency` | The same pooled Playwright action-command duration stored under two names and normalized with different bounds. They are not independent response endpoints. |
+| `layoutShiftDuringInteractions` | Sum of buffered layout-shift entries; the collector does not establish an interaction-only window or apply the full CLS session/input exclusions. |
+| `frameDropRate` | Estimate from CDP frame counters with a task-duration/elapsed-time fallback. It does not sample RAF cadence and is not a validated dropped-frame percentage. |
+| `wcagComplianceScore` | Overall Lighthouse accessibility category score, not WCAG conformance. |
+| `keyboardNavigationScore`, `screenReaderCompatibility` | Overlapping subsets of automated Lighthouse audits; the keyboard value can fall back to the overall accessibility score. No participant or assistive-technology task test is performed. |
+| `colorContrastRatio` | Lighthouse contrast-audit score scaled to 0–100, not a measured contrast ratio. |
+| `errorRate` | Console-error messages divided by all console messages, not failed-task rate or all client-side exceptions. |
+| `resourceLoadSuccessRate` | Successful recorded requests divided by all recorded requests. Requests are not classified by task importance. |
+| `networkFailureRecovery` | Legacy calculation lacks recorded retry evidence; it is 100 for all 99 measured pages. It does not establish recovery from failures. |
+| `serviceWorkerAvailable` | Browser API availability (`"serviceWorker" in navigator`), not active registration, offline behavior, or recovery. |
+
+Definitions are implemented in [Lighthouse collection](src/collectors/lighthouse-runner.ts), [Playwright collection](src/collectors/playwright-runner.ts), [metric aggregation](src/core/metrics-collector.ts), and [normalization](src/core/normalizer.ts).
+
+## Legacy scoring and missingness
+
+Category scores average available normalized fields. When an entire category is unavailable, the composite redistributes its weight across categories with data.
+
+Default category weights are 0.30 for `cvv`, 0.25 for `interactionStability`, 0.25 for `accessibility`, and 0.20 for `reliability`. The composite's coverage exponent defaults to 0.5 when `coveragePenaltyFactor` is omitted.
+
+```text
+rawComposite = sum(weight[c] * categoryScore[c]) / sum(weight[c])
+               over available categories
+
+z = coverage.overall.percentage / 100
+coverageFactor = max(z, 0.01) ** gamma   when gamma > 0
+                 1                    otherwise
+
+composite = rawComposite * coverageFactor
+```
+
+The implementation returns zero when there are no available categories or their total weight is zero, and rounds the returned composite to two decimal places. See [composite-engine.ts](src/core/composite-engine.ts).
+
+The coverage penalty applies to the composite, **not** to the legacy `cvv` reference. Missing LCP and CLS can therefore leave a favorable proxy-only reference score. Empty or failed Playwright runs can also produce a zero layout-shift value that is normalized as perfect, and a returned stage can be labeled successful despite failed interactions. Coverage and diagnostics must be inspected together; the penalty alone does not guarantee comparable measurements.
+
+The revised supplement addresses these interpretation problems by requiring a common set of retained measurements and sufficient recorded actions before comparison. That retrospective correction does not repair this repository's live collector.
+
+## Optional collection of new observations
+
+Fresh collection is a separate experiment. The archive cannot guarantee that current websites will have the same content, timings, consent layers, or bot defenses.
+
+Install Playwright's Chromium browser and a Chrome/Chromium installation discoverable by `chrome-launcher` for Lighthouse. For example:
+
+```sh
+npx playwright install chromium
+
+# One configured page; omit CrUX
+npm run benchmark -- --page wikipedia-web-performance --skip-crux --output data/new-observations
+
+# A sample manifest; omit CrUX
+npm run benchmark -- --pages-config config/pages_sample.json --skip-crux --output data/new-observations
+```
+
+Lighthouse uses `chrome-launcher`; installing Playwright Chromium alone does not establish that Lighthouse can locate a suitable browser. Confirm local browser discovery before collection.
+
+The default Playwright workflow selects available visible inputs/buttons and scrolls. Archetype labels do not select representative tasks or verify semantic completion. Each configured Playwright run uses a fresh context; the legacy workflow does not record a discarded warm-up or a cold-versus-warm cache experiment. Lighthouse runs once per page. Although `config/benchmark.json` declares preset and throttling values, those two settings are not passed through by the Lighthouse runner.
+
+CrUX is optional and uses `CRUX_API_KEY`. Its collector queries origin-level data and a legacy FID field; it does not collect current INP. Inspect and update that integration before relying on field CWV comparisons.
+
+New research collection should record the generating commit, actual runtime/tool/browser versions, effective settings, observation windows, task completion predicates, failed endpoints, and exclusion reasons. Preserve the committed historical observations.
+
+## Build, tests, and verification
+
+```sh
+npm run build
+npm test -- src/__tests__
+node dist/cli/index.js benchmark --help
+npm audit
+```
+
+Passing `src/__tests__` avoids counting emitted `dist/__tests__` copies again after a build. The 22 source tests cover normalization, coverage aggregation, and composite calculation. They do not validate browser measurements or perceived UX.
+
+Verification on **12 October 2026**, using the cited snapshot, its dependency lock, and Node.js 24.19.0:
+
+| Check | Result |
+|---|---|
+| Dependency installation with `npm ci --ignore-scripts` | Passed. |
+| `npm run build` | Passed. |
+| `npm test -- src/__tests__` | 22 tests passed in three files. |
+| Compiled benchmark command help | Passed. |
+| Analysis of the committed March 5 report | All JSON fields matched the archived summary. |
+| GitHub Actions and commit status checks at the audited snapshot | No workflow runs or reported status checks were present. |
+| `npm audit` on the locked dependencies | 51 affected dependency entries: 2 critical, 27 high, and 22 moderate. These counts include transitive dependencies and are not counts of independently confirmed exploits. |
+
+The critical-rated entries include `basic-ftp` and `vitest`; exposure depends on the affected feature and its use. Dependency updates need review and regression testing before this tool is treated as maintained for new collection. No dependency fix or live website collection was performed as part of this documentation verification.
+
+## Repository layout
+
+```text
+config/             Page manifests and declared benchmark settings
+src/cli/            Benchmark, report, and comparison commands
+src/collectors/     Browser, Lighthouse, CrUX, and auxiliary collectors
+src/core/           Aggregation, normalization, scoring, ranking, reporting
+src/__tests__/      Source unit tests
+scripts/            Legacy report-analysis script
+public_data/        Committed historical reports and summary
+data/               Generated local outputs
+```
+
+The `report` subcommand is a placeholder. The `compare` subcommand prints summaries of two reports; it does not run the revised manuscript's reanalysis.
+
+## Citation and license
+
+When citing the inspected implementation, identify the repository and full source revision `c5ad219de2074ac51a84824b032e653b8b8c0a8d`. Identify the March 5 report separately and do not claim that its generating revision or historical runtime is known.
+
+Source code is licensed under [Apache-2.0](LICENSE). Third-party websites and assets referenced in the manifests remain subject to their own terms.
