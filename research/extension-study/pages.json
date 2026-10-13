@@ -1,0 +1,720 @@
+{
+  "archetypes": {
+    "content-article": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "search-results": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "product-detail": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "listing-feed": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "landing-marketing": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "interactive-tool": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "media-playback": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "reference-portal": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured."
+  },
+  "selection": {
+    "method": "Purposive extension selected before extension measurements. Thirteen URLs in each of content, search, listing and marketing; twelve in each other archetype. Additional public pages across publishers, software, institutions, products and media. No URL replacement based on observed success or ranking. Archetype labels describe intended page form, not validated task coverage.",
+    "original_batch_size": 100,
+    "extension_size": 100,
+    "combined_size": 200
+  },
+  "pages": [
+    {
+      "id": "ap-news",
+      "name": "AP News",
+      "url": "https://apnews.com/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "smithsonian-magazine",
+      "name": "Smithsonian Magazine",
+      "url": "https://www.smithsonianmag.com/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "science-news",
+      "name": "Science News",
+      "url": "https://www.sciencenews.org/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "quanta-magazine",
+      "name": "Quanta Magazine",
+      "url": "https://www.quantamagazine.org/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "the-conversation",
+      "name": "The Conversation",
+      "url": "https://theconversation.com/us",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "propublica",
+      "name": "ProPublica",
+      "url": "https://www.propublica.org/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "aeon-essays",
+      "name": "Aeon",
+      "url": "https://aeon.co/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "nautilus-magazine",
+      "name": "Nautilus",
+      "url": "https://nautil.us/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "public-domain-review",
+      "name": "The Public Domain Review",
+      "url": "https://publicdomainreview.org/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "our-world-data",
+      "name": "Our World in Data",
+      "url": "https://ourworldindata.org/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "webdev-learn-performance",
+      "name": "web.dev Learn Performance",
+      "url": "https://web.dev/learn/performance",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "css-tricks",
+      "name": "CSS-Tricks",
+      "url": "https://css-tricks.com/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "alistapart",
+      "name": "A List Apart",
+      "url": "https://alistapart.com/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "arxiv-search",
+      "name": "arXiv search",
+      "url": "https://arxiv.org/search/?query=web+performance&searchtype=all",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "pubmed-search",
+      "name": "PubMed search",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/?term=usability",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "europepmc-search",
+      "name": "Europe PMC search",
+      "url": "https://europepmc.org/search?query=usability",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "openlibrary-search",
+      "name": "Open Library search",
+      "url": "https://openlibrary.org/search?q=web+design",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "gutenberg-search",
+      "name": "Project Gutenberg search",
+      "url": "https://www.gutenberg.org/ebooks/search/?query=science",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "smithsonian-search",
+      "name": "Smithsonian search",
+      "url": "https://www.si.edu/search?edan_q=design",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "loc-search",
+      "name": "Library of Congress search",
+      "url": "https://www.loc.gov/search/?q=design",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "wikimedia-search",
+      "name": "Wikimedia Commons search",
+      "url": "https://commons.wikimedia.org/w/index.php?search=architecture&title=Special:MediaSearch&type=image",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "pypi-search",
+      "name": "PyPI search",
+      "url": "https://pypi.org/search/?q=benchmark",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "crates-search",
+      "name": "crates.io search",
+      "url": "https://crates.io/search?q=benchmark",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "rubygems-search",
+      "name": "RubyGems search",
+      "url": "https://rubygems.org/search?query=benchmark",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "nuget-search",
+      "name": "NuGet search",
+      "url": "https://www.nuget.org/packages?q=benchmark",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "data-gov-search",
+      "name": "Data.gov search",
+      "url": "https://catalog.data.gov/dataset/?q=transportation",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "framework-laptop",
+      "name": "Framework Laptop 13",
+      "url": "https://frame.work/products/laptop13",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "raspberrypi-five",
+      "name": "Raspberry Pi 5",
+      "url": "https://www.raspberrypi.com/products/raspberry-pi-5/",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "fairphone-product",
+      "name": "Fairphone product",
+      "url": "https://shop.fairphone.com/fairphone-6",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "logitech-mx-master",
+      "name": "Logitech MX Master product",
+      "url": "https://www.logitech.com/en-us/products/mice/mx-master-3s.html",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "ikea-billy",
+      "name": "IKEA Billy bookcase",
+      "url": "https://www.ikea.com/us/en/p/billy-bookcase-white-00263850/",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "patagonia-torrentshell",
+      "name": "Patagonia Torrentshell",
+      "url": "https://www.patagonia.com/product/mens-torrentshell-3l-rain-jacket/85241.html",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "lego-bonsai",
+      "name": "LEGO Bonsai Tree",
+      "url": "https://www.lego.com/en-us/product/bonsai-tree-10281",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "nintendo-switch",
+      "name": "Nintendo Switch",
+      "url": "https://www.nintendo.com/us/gaming-systems/switch/",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "steam-stardew",
+      "name": "Stardew Valley",
+      "url": "https://store.steampowered.com/app/413150/Stardew_Valley/",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "gutenberg-frankenstein",
+      "name": "Frankenstein book record",
+      "url": "https://www.gutenberg.org/ebooks/84",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "loc-photograph",
+      "name": "Library of Congress photograph record",
+      "url": "https://www.loc.gov/item/2016805158/",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "adafruit-feather",
+      "name": "Adafruit Feather product",
+      "url": "https://www.adafruit.com/product/3403",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "github-trending",
+      "name": "GitHub Trending",
+      "url": "https://github.com/trending",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "lobsters-feed",
+      "name": "Lobsters",
+      "url": "https://lobste.rs/",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "dev-community",
+      "name": "DEV Community",
+      "url": "https://dev.to/",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "f-droid-packages",
+      "name": "F-Droid package catalog",
+      "url": "https://f-droid.org/en/packages/",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "flathub-apps",
+      "name": "Flathub",
+      "url": "https://flathub.org/",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "ubuntu-snap-store",
+      "name": "Snap Store",
+      "url": "https://snapcraft.io/store",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "gutenberg-popular",
+      "name": "Project Gutenberg popular books",
+      "url": "https://www.gutenberg.org/browse/scores/top",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "doaj-journals",
+      "name": "DOAJ journals",
+      "url": "https://doaj.org/search/journals",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "arxiv-cs-recent",
+      "name": "arXiv recent computer science",
+      "url": "https://arxiv.org/list/cs/recent",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "met-collection",
+      "name": "Metropolitan Museum collection",
+      "url": "https://www.metmuseum.org/art/collection",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "rijksmuseum-collection",
+      "name": "Rijksmuseum collection",
+      "url": "https://www.rijksmuseum.nl/en/collection",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "nationalgallery-collection",
+      "name": "National Gallery paintings",
+      "url": "https://www.nationalgallery.org.uk/paintings/explore-the-paintings",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "itch-games",
+      "name": "itch.io games",
+      "url": "https://itch.io/games",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "linear-landing",
+      "name": "Linear",
+      "url": "https://linear.app/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "slack-landing",
+      "name": "Slack",
+      "url": "https://slack.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "zoom-landing",
+      "name": "Zoom",
+      "url": "https://www.zoom.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "atlassian-landing",
+      "name": "Atlassian",
+      "url": "https://www.atlassian.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "basecamp-landing",
+      "name": "Basecamp",
+      "url": "https://basecamp.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "buffer-landing",
+      "name": "Buffer",
+      "url": "https://buffer.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "mailchimp-landing",
+      "name": "Mailchimp",
+      "url": "https://mailchimp.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "webflow-landing",
+      "name": "Webflow",
+      "url": "https://webflow.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "framer-landing",
+      "name": "Framer",
+      "url": "https://www.framer.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "supabase-landing",
+      "name": "Supabase",
+      "url": "https://supabase.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "railway-landing",
+      "name": "Railway",
+      "url": "https://railway.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "render-landing",
+      "name": "Render",
+      "url": "https://render.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "posthog-landing",
+      "name": "PostHog",
+      "url": "https://posthog.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "desmos-calculator",
+      "name": "Desmos graphing calculator",
+      "url": "https://www.desmos.com/calculator",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "geogebra-calculator",
+      "name": "GeoGebra calculator",
+      "url": "https://www.geogebra.org/calculator",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "openstreetmap-tool",
+      "name": "OpenStreetMap",
+      "url": "https://www.openstreetmap.org/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "observable-plot-tool",
+      "name": "Observable Plot",
+      "url": "https://observablehq.com/plot/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "regex101-tool",
+      "name": "regex101",
+      "url": "https://regex101.com/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "regexr-tool",
+      "name": "RegExr",
+      "url": "https://regexr.com/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "excalidraw-tool",
+      "name": "Excalidraw",
+      "url": "https://excalidraw.com/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "diagrams-tool",
+      "name": "diagrams.net",
+      "url": "https://app.diagrams.net/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "overpass-turbo-tool",
+      "name": "Overpass Turbo",
+      "url": "https://overpass-turbo.eu/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "earth-nullschool-tool",
+      "name": "Earth wind visualization",
+      "url": "https://earth.nullschool.net/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "ventusky-tool",
+      "name": "Ventusky",
+      "url": "https://www.ventusky.com/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "timeanddate-calendar",
+      "name": "Time and Date calendar",
+      "url": "https://www.timeanddate.com/calendar/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "wikimedia-featured-images",
+      "name": "Wikimedia featured pictures",
+      "url": "https://commons.wikimedia.org/wiki/Commons:Featured_pictures",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "nasa-image-library",
+      "name": "NASA Image and Video Library",
+      "url": "https://images.nasa.gov/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "esa-image-gallery",
+      "name": "ESA image gallery",
+      "url": "https://www.esa.int/ESA_Multimedia/Images",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "hubble-gallery",
+      "name": "Hubble image gallery",
+      "url": "https://esahubble.org/images/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "webb-gallery",
+      "name": "Webb image gallery",
+      "url": "https://esawebb.org/images/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "nationalgallery-art",
+      "name": "National Gallery of Art collection",
+      "url": "https://www.nga.gov/artworks.html",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "nationalarchives-video",
+      "name": "US National Archives video resources",
+      "url": "https://www.archives.gov/research/motion-pictures",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "incompetech-music",
+      "name": "Incompetech royalty-free music",
+      "url": "https://incompetech.com/music/royalty-free/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "musopen-music",
+      "name": "Musopen recordings",
+      "url": "https://musopen.org/music/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "radio-garden",
+      "name": "Radio Garden",
+      "url": "https://radio.garden/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "librevox-audiobooks",
+      "name": "LibriVox",
+      "url": "https://librivox.org/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "europeana-collections",
+      "name": "Europeana collections",
+      "url": "https://www.europeana.eu/en/collections",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "python-docs",
+      "name": "Python documentation",
+      "url": "https://docs.python.org/3/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "nodejs-docs",
+      "name": "Node.js documentation",
+      "url": "https://nodejs.org/api/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "typescript-docs",
+      "name": "TypeScript documentation",
+      "url": "https://www.typescriptlang.org/docs/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "rust-book",
+      "name": "Rust book",
+      "url": "https://doc.rust-lang.org/book/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "go-docs",
+      "name": "Go documentation",
+      "url": "https://go.dev/doc/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "postgres-docs",
+      "name": "PostgreSQL documentation",
+      "url": "https://www.postgresql.org/docs/current/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "sqlite-docs",
+      "name": "SQLite documentation",
+      "url": "https://www.sqlite.org/docs.html",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "numpy-docs",
+      "name": "NumPy documentation",
+      "url": "https://numpy.org/doc/stable/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "scipy-docs",
+      "name": "SciPy documentation",
+      "url": "https://docs.scipy.org/doc/scipy/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "django-docs",
+      "name": "Django documentation",
+      "url": "https://docs.djangoproject.com/en/stable/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "w3c-standards",
+      "name": "W3C standards",
+      "url": "https://www.w3.org/standards/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "nist-publications",
+      "name": "NIST publications",
+      "url": "https://www.nist.gov/publications",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    }
+  ]
+}
