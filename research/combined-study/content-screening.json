@@ -1,0 +1,9 @@
+{
+  "recorded_utc": "2026-10-13T00:43:00.659105+00:00",
+  "classification": "Additional content-quality screen recorded after first-batch results and five extension URL records. It corrects observed title-detector misses; it is not an original prespecified analysis rule.",
+  "reason": "PyPI yielded HTTP 200 and title Client Challenge, which the collector did not recognize. Raw observations and collector flags must remain unchanged. Ranking eligibility must describe intended content rather than a recognized challenge or error document.",
+  "rule": "Exclude a run whose case-insensitive title matches client challenge; exact Oh noes!; your access has been blocked; are you a robot; access to this page has been denied; exact Error Page | eBay; or Page Not Found optionally followed by a dash/pipe suffix. Apply identically to both batches. Require at least three remaining valid runs. Preserve all attempts and report the change from collector eligibility.",
+  "scope": "Title-based screen cannot guarantee detection of all interstitials. No content bypass, extra navigation, URL replacement or outcome-targeted rerun.",
+  "known_observation": "All five recorded PyPI search runs show title Client Challenge.",
+  "first_batch_title_audit": "Other recognized error/challenge titles were already excluded by raw collection outcomes; pooling preserves their records."
+}
