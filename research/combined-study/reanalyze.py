@@ -174,7 +174,7 @@ def main():
     for name,data,fields in [('eligible-pages.csv',rows,list(rows[0])),('excluded-pages.csv',excluded,['pageId','url','archetype','collection_batch','eligible_runs','reasons'])]:
         with (HERE/name).open('w',newline='') as f:
             writer=csv.DictWriter(f,fieldnames=fields);writer.writeheader();writer.writerows(data)
-    hashes={str(p.relative_to(HERE)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted([p for p in DATA.rglob('*') if p.is_file()]+[p for p in (HERE/'recorded-batches').rglob('*') if p.is_file()]+[p for p in (HERE/'recorded-dependencies').rglob('*') if p.is_file()]+[HERE/'pages.json',HERE/'protocol.json',HERE/'reanalyze.py',HERE/'content-screening.json',HERE/'check_analysis.py'])}
+    hashes={str(p.relative_to(HERE)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted([p for p in DATA.rglob('*') if p.is_file()]+[p for p in (HERE/'recorded-batches').rglob('*') if p.is_file()]+[p for p in (HERE/'recorded-dependencies').rglob('*') if p.is_file()]+[HERE/'pages.json',HERE/'protocol.json',HERE/'reanalyze.py',HERE/'restore_data.py',HERE/'content-screening.json',HERE/'check_analysis.py'])}
     (HERE/'data-hashes.json').write_text(json.dumps(hashes,indent=2)+'\n')
     print(json.dumps({k:output[k] for k in ['primary','conditional_spearman_interval','eligible_archetypes','eligible_lcp_saturation','checks']},indent=2))
 
