@@ -1,0 +1,57 @@
+pageId,url,archetype,collection_batch,eligible_runs,reasons
+w3schools-reference,https://www.w3schools.com,reference-portal,first,5,missing retained measurement
+investopedia,https://www.investopedia.com,interactive-tool,first,0,fewer than three eligible browser runs; missing retained measurement
+producthunt-today,https://www.producthunt.com,listing-feed,first,0,fewer than three eligible browser runs; missing retained measurement
+unsplash-photos,https://unsplash.com,listing-feed,first,0,fewer than three eligible browser runs; missing retained measurement; recognized challenge or error document in additional content screen
+tripadvisor-search,https://www.tripadvisor.com/Restaurants,search-results,first,0,fewer than three eligible browser runs; missing retained measurement
+hubspot-home,https://www.hubspot.com,landing-marketing,first,5,missing retained measurement
+nytimes-home,https://www.nytimes.com,content-article,first,0,fewer than three eligible browser runs; missing retained measurement
+stackoverflow-question,https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array,search-results,first,0,fewer than three eligible browser runs; missing retained measurement
+washpost-home,https://www.washingtonpost.com,content-article,first,0,fewer than three eligible browser runs; missing retained measurement
+codepen-home,https://codepen.io,interactive-tool,first,0,fewer than three eligible browser runs; missing retained measurement
+realtor-search,https://www.realtor.com,search-results,first,0,fewer than three eligible browser runs; missing retained measurement
+imdb-movie,https://www.imdb.com/title/tt0111161/,product-detail,first,0,fewer than three eligible browser runs; missing retained measurement
+indeed-jobs,https://www.indeed.com/jobs?q=software+engineer,search-results,first,0,fewer than three eligible browser runs; missing retained measurement
+behance-gallery,https://www.behance.net,listing-feed,first,0,fewer than three eligible browser runs; missing retained measurement
+atlantic-home,https://www.theatlantic.com,content-article,first,0,fewer than three eligible browser runs; missing retained measurement; recognized challenge or error document in additional content screen
+yelp-search,https://www.yelp.com/search?find_desc=restaurants,search-results,first,0,fewer than three eligible browser runs; missing retained measurement
+udemy-courses,https://www.udemy.com,reference-portal,first,0,fewer than three eligible browser runs; missing retained measurement
+steam-game,https://store.steampowered.com/app/570/Dota_2/,product-detail,first,5,missing retained measurement
+salesforce-home,https://www.salesforce.com,landing-marketing,first,0,fewer than three eligible browser runs; missing retained measurement
+medium-home,https://medium.com,content-article,first,0,fewer than three eligible browser runs; missing retained measurement
+google-scholar,https://scholar.google.com/scholar?q=web+performance,search-results,first,0,fewer than three eligible browser runs; missing retained measurement
+speedtest,https://www.speedtest.net,interactive-tool,first,5,missing retained measurement
+bloomberg-markets,https://www.bloomberg.com/markets,interactive-tool,first,0,fewer than three eligible browser runs; missing retained measurement; recognized challenge or error document in additional content screen
+bbc-news,https://www.bbc.com/news,content-article,first,5,missing retained measurement
+npm-search,https://www.npmjs.com/search?q=lighthouse,search-results,first,0,fewer than three eligible browser runs; missing retained measurement
+etsy-home,https://www.etsy.com,listing-feed,first,0,fewer than three eligible browser runs; missing retained measurement
+reuters-home,https://www.reuters.com,content-article,first,0,fewer than three eligible browser runs; missing retained measurement
+reddit-programming,https://www.reddit.com/r/programming,listing-feed,first,5,missing retained measurement
+allrecipes-recipe,https://www.allrecipes.com/recipe/22180/waffles-i/,product-detail,first,0,fewer than three eligible browser runs; missing retained measurement
+zillow-search,https://www.zillow.com/homes/,search-results,first,0,fewer than three eligible browser runs; missing retained measurement; recognized challenge or error document in additional content screen
+pexels-home,https://www.pexels.com,media-playback,first,0,fewer than three eligible browser runs; missing retained measurement
+ebay-search,https://www.ebay.com/sch/i.html?_nkw=headphones,search-results,first,0,fewer than three eligible browser runs; missing retained measurement; recognized challenge or error document in additional content screen
+mayoclinic-condition,https://www.mayoclinic.org/diseases-conditions/common-cold/symptoms-causes/syc-20351605,product-detail,first,0,fewer than three eligible browser runs; missing retained measurement
+deviantart-gallery,https://www.deviantart.com,listing-feed,first,5,missing retained measurement
+loc-photograph,https://www.loc.gov/item/2016805158/,product-detail,extension,0,fewer than three eligible browser runs; missing retained measurement
+pypi-search,https://pypi.org/search/?q=benchmark,search-results,extension,0,recognized challenge or error document in additional content screen
+smithsonian-magazine,https://www.smithsonianmag.com/,content-article,extension,0,fewer than three eligible browser runs; missing retained measurement
+loc-search,https://www.loc.gov/search/?q=design,search-results,extension,0,fewer than three eligible browser runs; missing retained measurement
+nationalgallery-art,https://www.nga.gov/artworks.html,media-playback,extension,0,fewer than three eligible browser runs; missing retained measurement
+framework-laptop,https://frame.work/products/laptop13,product-detail,extension,0,fewer than three eligible browser runs; missing retained measurement
+musopen-music,https://musopen.org/music/,media-playback,extension,0,fewer than three eligible browser runs; missing retained measurement
+itch-games,https://itch.io/games,listing-feed,extension,0,fewer than three eligible browser runs; missing retained measurement
+public-domain-review,https://publicdomainreview.org/,content-article,extension,5,missing retained measurement
+europepmc-search,https://europepmc.org/search?query=usability,search-results,extension,0,fewer than three eligible browser runs; missing retained measurement
+arxiv-search,https://arxiv.org/search/?query=web+performance&searchtype=all,search-results,extension,5,missing retained measurement
+smithsonian-search,https://www.si.edu/search?edan_q=design,search-results,extension,0,fewer than three eligible browser runs; missing retained measurement
+ap-news,https://apnews.com/,content-article,extension,0,fewer than three eligible browser runs; missing retained measurement
+pubmed-search,https://pubmed.ncbi.nlm.nih.gov/?term=usability,search-results,extension,1,fewer than three eligible browser runs
+raspberrypi-five,https://www.raspberrypi.com/products/raspberry-pi-5/,product-detail,extension,0,fewer than three eligible browser runs; missing retained measurement
+patagonia-torrentshell,https://www.patagonia.com/product/mens-torrentshell-3l-rain-jacket/85241.html,product-detail,extension,0,recognized challenge or error document in additional content screen
+lego-bonsai,https://www.lego.com/en-us/product/bonsai-tree-10281,product-detail,extension,0,fewer than three eligible browser runs; missing retained measurement
+doaj-journals,https://doaj.org/search/journals,listing-feed,extension,0,fewer than three eligible browser runs; missing retained measurement
+fairphone-product,https://shop.fairphone.com/fairphone-6,product-detail,extension,0,fewer than three eligible browser runs; missing retained measurement; recognized challenge or error document in additional content screen
+europeana-collections,https://www.europeana.eu/en/collections,media-playback,extension,0,fewer than three eligible browser runs; missing retained measurement
+atlassian-landing,https://www.atlassian.com/,landing-marketing,extension,5,missing retained measurement
+timeanddate-calendar,https://www.timeanddate.com/calendar/,interactive-tool,extension,0,fewer than three eligible browser runs; missing retained measurement

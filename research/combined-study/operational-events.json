@@ -1,0 +1,9 @@
+{
+  "audit_hard_timeouts": [
+    "speedtest"
+  ],
+  "timed_out_measurements_preserved_as_unavailable": true,
+  "leftover_audit_browser_closed_after_collection": true,
+  "browser_pid": 69805,
+  "affected_time_window_note": "One timed-out audit left an isolated browser process running until collection ended. Host/background activity was not quantified; measured values are retained without selective reruns."
+}

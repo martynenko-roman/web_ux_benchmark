@@ -1,7 +1,7 @@
 {
   "name": "web-ux-benchmark",
   "version": "1.0.0",
-  "description": "Benchmarking Web UX Beyond Core Web Vitals",
+  "description": "Measurement coverage and timing semantics in automated web quality rankings",
   "type": "module",
   "main": "dist/cli/index.js",
   "bin": {
@@ -10,11 +10,13 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/cli/index.ts",
-    "benchmark": "tsx src/cli/index.ts benchmark",
+    "benchmark": "node research/replication-study/collect.mjs",
     "report": "tsx src/cli/index.ts report",
     "compare": "tsx src/cli/index.ts compare",
     "analyze": "tsx scripts/analyze-report.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "benchmark:typescript": "tsx src/cli/index.ts benchmark",
+    "test:study": "node --test research/replication-study/measurements.test.mjs"
   },
   "keywords": [
     "web",
@@ -37,9 +39,6 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
-    "@typescript-eslint/eslint-plugin": "^7.1.0",
-    "@typescript-eslint/parser": "^7.1.0",
-    "eslint": "^8.57.0",
     "prettier": "^3.2.5",
     "tsx": "^4.7.1",
     "typescript": "^5.3.3",

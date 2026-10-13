@@ -1,0 +1,100 @@
+{
+  "protocol_id": "web-quality-independent-replication-200",
+  "dataset_id": "web-quality-independent-replication-200",
+  "recorded_before_collection_utc": "2026-10-13T01:04:30.928657+00:00",
+  "purpose": "Separate 200-URL replication recipe using the recorded measurement definitions. This recipe contains no observations. Retain the existing two-batch dataset and write new measurements to a distinct output directory.",
+  "manifest_sha256": "94d0db46bc98754522f26b0ecc4fd6361346baca34f2c5695a2c300d377019da",
+  "order_seed": 20261015,
+  "order": "fixed-seed Fisher-Yates shuffle; each URL completed sequentially; no concurrent page collection",
+  "browser": {
+    "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "launch_args": [
+      "--headless=new",
+      "--disable-background-networking",
+      "--lang=en-US",
+      "--window-size=1920,1080"
+    ],
+    "viewport": {
+      "width": 1920,
+      "height": 1080
+    },
+    "locale": "en-US",
+    "timezone": "America/New_York",
+    "runs_per_url": 5,
+    "navigation_timeout_ms": 20000,
+    "post_navigation_wait_ms": 1500,
+    "scroll_delta_y": 500,
+    "post_action_observation_ms": 700,
+    "cache_state": "fresh isolated Playwright context per run; service workers blocked",
+    "actions": "two trusted wheel commands only; no form filling, button clicking, login, consent acceptance, overlay removal, or access-control bypass",
+    "timing": "Node monotonic clock around mouse.wheel. Command completion is not scroll completion, INP, paint time, or user task success. Viewport displacement is diagnostic only.",
+    "requests": "Count requests started from navigation through the end of the second fixed post-action wait. Successful requests must have finished with HTTP 200-399 and no failure. Pending requests remain in the denominator and are reported separately."
+  },
+  "lighthouse": {
+    "runs_per_eligible_url": 1,
+    "skip_condition": "skip and record null metrics if all five browser runs are ineligible",
+    "hard_timeout_ms": 75000,
+    "settings": {
+      "onlyCategories": [
+        "performance",
+        "accessibility"
+      ],
+      "formFactor": "desktop",
+      "screenEmulation": {
+        "mobile": false,
+        "width": 1920,
+        "height": 1080,
+        "deviceScaleFactor": 1,
+        "disabled": false
+      },
+      "emulatedUserAgent": false,
+      "throttlingMethod": "provided",
+      "locale": "en-US",
+      "maxWaitForFcp": 15000,
+      "maxWaitForLoad": 20000,
+      "pauseAfterFcpMs": 1000,
+      "pauseAfterLoadMs": 1000,
+      "networkQuietThresholdMs": 1000,
+      "cpuQuietThresholdMs": 1000,
+      "disableStorageReset": false,
+      "disableFullPageScreenshot": true,
+      "skipAudits": [
+        "screenshot-thumbnails"
+      ]
+    }
+  },
+  "eligibility": "At least three browser runs with valid HTTP content and two successful wheel commands; finite nonnegative LCP and CLS; finite audit score 0-100; finite pooled command duration and request-success percentage. Failures and challenges are excluded with reasons, not replaced by perfect scores.",
+  "failed_measurements": "Preserve all attempts and exceptions; unavailable endpoints are null. HTTP errors and observed access/authentication challenges are recorded without bypass.",
+  "retry_policy": "No replacement URL and no success-targeted rerun. Five prescribed attempts per URL; worker failure remains an unavailable measurement.",
+  "analysis": {
+    "category_weights": [
+      0.25,
+      0.25,
+      0.25,
+      0.25
+    ],
+    "sensitivity_preference": [
+      0.3,
+      0.25,
+      0.25,
+      0.2
+    ],
+    "normalization_upper_bounds": {
+      "lcp_ms": 4000,
+      "cls": 0.25,
+      "scroll_command_ms": 500
+    },
+    "minimum_action_runs": 3,
+    "bootstrap_replicates": 2000,
+    "bootstrap_seed": 20261012,
+    "weight_scenarios": 1000,
+    "weight_scenario_seed": 20261013,
+    "raw_weight_bounds": [
+      0.1,
+      0.4
+    ],
+    "interpretation": "Descriptive statistics on eligible recorded URLs. Bootstrap is conditional on the single Lighthouse audit and resamples browser run records. Weights are explicit preferences, not user-derived estimates."
+  },
+  "stopping_rule": "Process all 200 specified URLs in seeded order, five browser attempts per URL and one conditional audit. Retain failures; no replacement or success-targeted reruns.",
+  "limitations": "One machine, browser, viewport and session; purposive URLs; one Lighthouse audit per eligible URL; scroll-only command endpoint; no semantic task-completion or human data; no estimate of historical website changes."
+}

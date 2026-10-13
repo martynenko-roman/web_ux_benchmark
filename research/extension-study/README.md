@@ -11,3 +11,5 @@ STUDY_SOURCE_COMMIT=<recorded-source-commit> node research/extension-study/colle
 ```
 
 The collector refuses to overwrite an existing output report. The executed source hashes, environment, start and completion times are recorded with results. The worker includes verified timeout cleanup; measurement definitions match the first batch.
+
+The complete pooled dataset and analysis are under ../combined-study/. The original report/run snapshot and executed-source hashes are preserved there. Use ../replication-study/ for a separate full 200-URL collection.

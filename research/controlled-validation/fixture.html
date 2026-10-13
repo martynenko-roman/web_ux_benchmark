@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Controlled command-duration fixture</title>
+<style>body{font:18px system-ui;padding:40px}button{padding:15px}#result{min-height:40px;margin-top:24px}</style>
+<h1>Controlled task</h1>
+<button id="action" type="button">Complete task</button>
+<div id="result" role="status" aria-live="polite">Pending</div>
+<script>
+const args = new URL(location.href).searchParams;
+const mode = args.get('mode') || 'sync';
+const delay = Number(args.get('delay') || 0);
+const button = document.querySelector('#action');
+const result = document.querySelector('#result');
+window.observation = {mode, delay_ms: delay, started_ms: null, completed_ms: null,
+  ready_ms: null, trusted_click: null, event_entries: []};
+if (PerformanceObserver.supportedEntryTypes.includes('event')) {
+  new PerformanceObserver(list => {
+    for (const entry of list.getEntries()) {
+      window.observation.event_entries.push({name: entry.name, startTime: entry.startTime,
+        duration: entry.duration, processingStart: entry.processingStart,
+        processingEnd: entry.processingEnd, interactionId: entry.interactionId});
+    }
+  }).observe({type: 'event', buffered: true, durationThreshold: 16});
+}
+if (mode === 'missing-button') button.remove();
+if (mode === 'ready') {
+  button.disabled = true;
+  window.beginReadiness = () => setTimeout(() => {
+    window.observation.ready_ms = performance.now(); button.disabled = false;
+  }, delay);
+}
+function complete() {
+  result.textContent = 'Completed'; result.dataset.complete = 'true';
+  window.observation.completed_ms = performance.now();
+}
+button.addEventListener('click', event => {
+  window.observation.started_ms = performance.now();
+  window.observation.trusted_click = event.isTrusted;
+  if (mode === 'missing-feedback') return;
+  if (mode === 'async') { setTimeout(complete, delay); return; }
+  if (mode === 'sync') {
+    const finish = performance.now() + delay;
+    while (performance.now() < finish) { /* deliberate controlled main-thread processing */ }
+  }
+  complete();
+});
+</script>
+</html>

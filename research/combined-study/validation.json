@@ -1,0 +1,13 @@
+{
+  "all_200_urls_retained": true,
+  "all_1000_browser_attempts_retained": true,
+  "collection_source_hashes_verified": true,
+  "each_batch_protocol_precedes_its_collection": true,
+  "pooling_preserves_original_observations": true,
+  "eligible_urls": 144,
+  "excluded_urls": 56,
+  "independent_pearson_spearman_tau_and_pair_counts_match": true,
+  "raw_audit_values_and_run_pooling_match": true,
+  "seeded_scoring_and_tight_bound_cases": 1000,
+  "participant_observations": 0
+}

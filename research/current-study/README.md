@@ -1,18 +1,7 @@
-# Prospective web quality study
+# First recorded 100-URL batch
 
-This directory contains the recorded protocol and collection code for **Measurement Coverage and Timing Semantics in Automated Web Quality Rankings**.
+This directory preserves the first batch manifest, protocol and collection source. All 100 URLs and 500 browser attempts are included in the pooled dataset under ../combined-study/. The exact generating commit and executed source hashes are retained there.
 
-The protocol covers the fixed 100-URL manifest. It prescribes five isolated, read-only browser runs per URL and one Lighthouse audit when at least one browser run returns eligible content. The collector records every attempt, failure, HTTP/access challenge, effective audit setting, source hash, timestamp, and runtime version.
+The batch uses five fresh read-only browser contexts per URL and one conditional audit. Only wheel commands are issued; command duration is not INP or task completion. Unavailable measurements remain null.
 
-The only actions are two wheel commands. The measured command duration is not INP, paint time, perceived responsiveness, or semantic task completion. No arbitrary form or button action is performed. Invalid or unavailable measurements remain null.
-
-From the repository root, install the locked dependencies with `npm ci --ignore-scripts`, then run:
-
-```sh
-node --test research/current-study/measurements.test.mjs
-node research/current-study/collect.mjs
-```
-
-The protocol records the Chrome executable path used for the collection. A replication on another system must record its own executable and environment. To preserve a distinct replication, set `STUDY_OUTPUT` to an unused directory. The collector refuses to overwrite an existing report. `STUDY_SOURCE_COMMIT` records the commit containing the collection code.
-
-The protocol is saved before collection. Outcome-dependent replacement attempts or alternative URLs are not part of the study. Successful completion means all configured URLs were attempted; it does not mean that all were measurable or eligible.
+The recorded worker had a timeout-cleanup limitation documented in the pooled operational events. Use ../replication-study/ for a separate collection with the current cleanup implementation and full 200-URL manifest. The recorded source remains available for inspection; later corrections do not change its provenance.

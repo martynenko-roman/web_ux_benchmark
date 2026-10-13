@@ -1,0 +1,37 @@
+{
+  "protocol_version": "1.0.0",
+  "recorded_before_collection_utc": "2026-10-12T01:55:46Z",
+  "purpose": "Test whether automation click-command duration tracks controlled synchronous processing, asynchronous task completion, and pre-action readiness. This is instrument characterization, not a participant study or website recollection.",
+  "seed": 20261011,
+  "blocks": 12,
+  "conditions": [
+    {"id": "sync-0", "mode": "sync", "delay_ms": 0},
+    {"id": "sync-100", "mode": "sync", "delay_ms": 100},
+    {"id": "sync-300", "mode": "sync", "delay_ms": 300},
+    {"id": "sync-700", "mode": "sync", "delay_ms": 700},
+    {"id": "async-100", "mode": "async", "delay_ms": 100},
+    {"id": "async-300", "mode": "async", "delay_ms": 300},
+    {"id": "async-700", "mode": "async", "delay_ms": 700},
+    {"id": "ready-300", "mode": "ready", "delay_ms": 300}
+  ],
+  "failure_controls": ["missing-button", "missing-feedback"],
+  "failure_repetitions": 3,
+  "viewport": {"width": 1280, "height": 720},
+  "locale": "en-US",
+  "timezone": "America/New_York",
+  "command_timeout_ms": 2000,
+  "failure_timeout_ms": 500,
+  "feedback_polling": "requestAnimationFrame",
+  "cache_state": "fresh context per observation; local fixture has no external assets",
+  "warmup": "one separately logged sync-0 observation excluded from the 96 experimental observations",
+  "ordering": "condition order shuffled within each block with a fixed-seed linear congruential generator",
+  "endpoints": {
+    "command_duration_ms": "Node monotonic elapsed time around Playwright locator.click; null if command fails",
+    "page_response_ms": "page performance.now difference from trusted click-handler entry to DOM result update; null without result",
+    "task_completion_duration_ms": "Node monotonic time from click-command invocation through observed completion predicate; null without completion",
+    "event_durations_ms": "raw PerformanceEventTiming durations, when supported; not aggregated or labeled as INP"
+  },
+  "analysis": "Report all observations, per-condition medians and empirical ranges, and asynchronous underestimation. No population inference, parameter fitting, outlier deletion, or participant claims.",
+  "stopping_rule": "12 complete blocks plus 3 observations per failure condition; preserve every exception; do not replace failed runs",
+  "limitations": "One browser, machine, viewport and session; known-delay fixtures; requestAnimationFrame observation is not a paint timestamp; timer targets are minimum delays, not exact elapsed-time ground truth; no evidence about perceived usability."
+}

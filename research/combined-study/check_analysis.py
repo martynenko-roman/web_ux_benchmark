@@ -28,7 +28,7 @@ def properties():
     for bad in [float('nan'),float('inf'),-1,'0',True]:assert model.inverse(bad,500) is None
     example={'eligible':True,'actions':[{'command_success':True,'command_duration_ms':1},{'command_success':True,'command_duration_ms':2}],'network':{'request_count':4,'successful_request_count':3}}
     assert len(model.valid_runs([example]))==1 and model.run_values([example])==(1.5,75)
-    for title in ['Client Challenge','Oh noes!','Bloomberg - Are you a robot?','Error Page | eBay','Page Not Found']:
+    for title in ['Client Challenge','Oh noes!','Bloomberg - Are you a robot?','Error Page | eBay','Page Not Found','Hang Tight! Routing to checkout...']:
         assert not model.valid_runs([{**example,'document_title':title}])
     invalid={**example,'network':{'request_count':4,'successful_request_count':5}}
     assert not model.valid_runs([invalid])
@@ -67,6 +67,7 @@ def main():
     for batch in data['metadata']['collection_batches']:
         metadata=batch['metadata'];directory=HERE/'recorded-batches'/batch['batch']
         bp=json.loads((directory/'protocol.json').read_text());bm=json.loads((directory/'pages.json').read_text())
+        assert bp['manifest_sha256']==hashlib.sha256((directory/'pages.json').read_bytes()).hexdigest()
         assert datetime.fromisoformat(bp['recorded_before_collection_utc'])<datetime.fromisoformat(metadata['started_utc'])<datetime.fromisoformat(metadata['completed_utc'])
         assert hashlib.sha256((directory/'report.json').read_bytes()).hexdigest()==batch['report_sha256']
         assert hashlib.sha256((directory/'runs.json').read_bytes()).hexdigest()==batch['runs_sha256']

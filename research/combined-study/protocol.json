@@ -1,0 +1,35 @@
+{
+  "protocol_id": "web-quality-two-batch-analysis-2026-10",
+  "analysis": {
+    "category_weights": [
+      0.25,
+      0.25,
+      0.25,
+      0.25
+    ],
+    "sensitivity_preference": [
+      0.3,
+      0.25,
+      0.25,
+      0.2
+    ],
+    "normalization_upper_bounds": {
+      "lcp_ms": 4000,
+      "cls": 0.25,
+      "scroll_command_ms": 500
+    },
+    "minimum_action_runs": 3,
+    "bootstrap_replicates": 2000,
+    "bootstrap_seed": 20261012,
+    "weight_scenarios": 1000,
+    "weight_scenario_seed": 20261013,
+    "raw_weight_bounds": [
+      0.1,
+      0.4
+    ],
+    "interpretation": "Descriptive statistics on eligible recorded URLs. Bootstrap is conditional on the single Lighthouse audit and resamples browser run records. Weights are explicit preferences, not user-derived estimates."
+  },
+  "collection": "Each batch follows its own recorded protocol. Five browser attempts per URL, one conditional Lighthouse audit. Protocols and executed source retained under recorded-batches.",
+  "extension_analysis_recorded_utc": "2026-10-13T00:13:37.307795+00:00",
+  "interpretation": "Pooled descriptive analysis of a purposive two-batch sample; batch summaries supplied; no random-population or human UX inference."
+}

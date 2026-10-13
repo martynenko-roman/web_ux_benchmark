@@ -1,0 +1,1415 @@
+{
+  "archetypes": {
+    "content-article": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "search-results": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "product-detail": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "listing-feed": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "landing-marketing": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "interactive-tool": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "media-playback": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured.",
+    "reference-portal": "Purposive page-archetype label; only loading, audit, wheel-command and request endpoints are measured."
+  },
+  "selection": "Two purposive recorded batches of 100 distinct URLs each; extension selected after first-batch results. These 200 URLs are the complete manifest for a separately collected replication.",
+  "pages": [
+    {
+      "id": "wikipedia-web-performance",
+      "name": "Wikipedia \u2013 Web Performance",
+      "url": "https://en.wikipedia.org/wiki/Web_performance",
+      "category": "content-article",
+      "expectedPattern": "long-form-article"
+    },
+    {
+      "id": "bbc-news",
+      "name": "BBC News",
+      "url": "https://www.bbc.com/news",
+      "category": "content-article",
+      "expectedPattern": "news-homepage"
+    },
+    {
+      "id": "nytimes-home",
+      "name": "New York Times",
+      "url": "https://www.nytimes.com",
+      "category": "content-article",
+      "expectedPattern": "news-homepage"
+    },
+    {
+      "id": "reuters-home",
+      "name": "Reuters",
+      "url": "https://www.reuters.com",
+      "category": "content-article",
+      "expectedPattern": "news-homepage"
+    },
+    {
+      "id": "guardian-world",
+      "name": "The Guardian \u2013 World",
+      "url": "https://www.theguardian.com/world",
+      "category": "content-article",
+      "expectedPattern": "news-section"
+    },
+    {
+      "id": "cnn-home",
+      "name": "CNN",
+      "url": "https://www.cnn.com",
+      "category": "content-article",
+      "expectedPattern": "news-homepage"
+    },
+    {
+      "id": "wired-home",
+      "name": "Wired",
+      "url": "https://www.wired.com",
+      "category": "content-article",
+      "expectedPattern": "magazine-homepage"
+    },
+    {
+      "id": "arstechnica-home",
+      "name": "Ars Technica",
+      "url": "https://arstechnica.com",
+      "category": "content-article",
+      "expectedPattern": "tech-magazine"
+    },
+    {
+      "id": "the-verge-home",
+      "name": "The Verge",
+      "url": "https://www.theverge.com",
+      "category": "content-article",
+      "expectedPattern": "tech-magazine"
+    },
+    {
+      "id": "medium-home",
+      "name": "Medium",
+      "url": "https://medium.com",
+      "category": "content-article",
+      "expectedPattern": "blog-feed"
+    },
+    {
+      "id": "npr-home",
+      "name": "NPR",
+      "url": "https://www.npr.org",
+      "category": "content-article",
+      "expectedPattern": "news-homepage"
+    },
+    {
+      "id": "atlantic-home",
+      "name": "The Atlantic",
+      "url": "https://www.theatlantic.com",
+      "category": "content-article",
+      "expectedPattern": "magazine-homepage"
+    },
+    {
+      "id": "washpost-home",
+      "name": "Washington Post",
+      "url": "https://www.washingtonpost.com",
+      "category": "content-article",
+      "expectedPattern": "news-homepage"
+    },
+    {
+      "id": "duckduckgo-search",
+      "name": "DuckDuckGo Search",
+      "url": "https://duckduckgo.com/?q=web+performance+testing",
+      "category": "search-results",
+      "expectedPattern": "web-search"
+    },
+    {
+      "id": "stackoverflow-question",
+      "name": "Stack Overflow Question",
+      "url": "https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array",
+      "category": "search-results",
+      "expectedPattern": "question-answer"
+    },
+    {
+      "id": "github-search",
+      "name": "GitHub Search",
+      "url": "https://github.com/search?q=react&type=repositories",
+      "category": "search-results",
+      "expectedPattern": "code-search"
+    },
+    {
+      "id": "npm-search",
+      "name": "npm Search",
+      "url": "https://www.npmjs.com/search?q=lighthouse",
+      "category": "search-results",
+      "expectedPattern": "package-search"
+    },
+    {
+      "id": "google-scholar",
+      "name": "Google Scholar",
+      "url": "https://scholar.google.com/scholar?q=web+performance",
+      "category": "search-results",
+      "expectedPattern": "academic-search"
+    },
+    {
+      "id": "zillow-search",
+      "name": "Zillow Home Search",
+      "url": "https://www.zillow.com/homes/",
+      "category": "search-results",
+      "expectedPattern": "property-search"
+    },
+    {
+      "id": "indeed-jobs",
+      "name": "Indeed Job Search",
+      "url": "https://www.indeed.com/jobs?q=software+engineer",
+      "category": "search-results",
+      "expectedPattern": "job-search"
+    },
+    {
+      "id": "yelp-search",
+      "name": "Yelp Search",
+      "url": "https://www.yelp.com/search?find_desc=restaurants",
+      "category": "search-results",
+      "expectedPattern": "business-search"
+    },
+    {
+      "id": "tripadvisor-search",
+      "name": "TripAdvisor Restaurants",
+      "url": "https://www.tripadvisor.com/Restaurants",
+      "category": "search-results",
+      "expectedPattern": "travel-search"
+    },
+    {
+      "id": "ebay-search",
+      "name": "eBay Search",
+      "url": "https://www.ebay.com/sch/i.html?_nkw=headphones",
+      "category": "search-results",
+      "expectedPattern": "marketplace-search"
+    },
+    {
+      "id": "realtor-search",
+      "name": "Realtor.com",
+      "url": "https://www.realtor.com",
+      "category": "search-results",
+      "expectedPattern": "property-search"
+    },
+    {
+      "id": "craigslist-directory",
+      "name": "Craigslist",
+      "url": "https://www.craigslist.org",
+      "category": "search-results",
+      "expectedPattern": "classifieds-directory"
+    },
+    {
+      "id": "amazon-product",
+      "name": "Amazon Product Page",
+      "url": "https://a.co/d/gFKVZ7i",
+      "category": "product-detail",
+      "expectedPattern": "ecommerce-product"
+    },
+    {
+      "id": "imdb-movie",
+      "name": "IMDb \u2013 The Shawshank Redemption",
+      "url": "https://www.imdb.com/title/tt0111161/",
+      "category": "product-detail",
+      "expectedPattern": "movie-detail"
+    },
+    {
+      "id": "goodreads-book",
+      "name": "Goodreads \u2013 The Hobbit",
+      "url": "https://www.goodreads.com/book/show/5907.The_Hobbit",
+      "category": "product-detail",
+      "expectedPattern": "book-detail"
+    },
+    {
+      "id": "rottentomatoes-movie",
+      "name": "Rotten Tomatoes \u2013 Shawshank Redemption",
+      "url": "https://www.rottentomatoes.com/m/the_shawshank_redemption",
+      "category": "product-detail",
+      "expectedPattern": "review-aggregate"
+    },
+    {
+      "id": "allrecipes-recipe",
+      "name": "AllRecipes \u2013 Waffles",
+      "url": "https://www.allrecipes.com/recipe/22180/waffles-i/",
+      "category": "product-detail",
+      "expectedPattern": "recipe-detail"
+    },
+    {
+      "id": "apple-iphone",
+      "name": "Apple \u2013 iPhone",
+      "url": "https://www.apple.com/iphone/",
+      "category": "product-detail",
+      "expectedPattern": "product-showcase"
+    },
+    {
+      "id": "apple-macbook-pro",
+      "name": "Apple \u2013 MacBook Pro",
+      "url": "https://www.apple.com/macbook-pro/",
+      "category": "product-detail",
+      "expectedPattern": "product-showcase"
+    },
+    {
+      "id": "steam-game",
+      "name": "Steam \u2013 Dota 2",
+      "url": "https://store.steampowered.com/app/570/Dota_2/",
+      "category": "product-detail",
+      "expectedPattern": "game-detail"
+    },
+    {
+      "id": "webmd-condition",
+      "name": "WebMD \u2013 Cold & Flu",
+      "url": "https://www.webmd.com/cold-and-flu/default.htm",
+      "category": "product-detail",
+      "expectedPattern": "health-condition-detail"
+    },
+    {
+      "id": "mayoclinic-condition",
+      "name": "Mayo Clinic \u2013 Common Cold",
+      "url": "https://www.mayoclinic.org/diseases-conditions/common-cold/symptoms-causes/syc-20351605",
+      "category": "product-detail",
+      "expectedPattern": "health-condition-detail"
+    },
+    {
+      "id": "nps-yosemite",
+      "name": "NPS \u2013 Yosemite",
+      "url": "https://www.nps.gov/yose/index.htm",
+      "category": "product-detail",
+      "expectedPattern": "park-detail"
+    },
+    {
+      "id": "spacex-falcon9",
+      "name": "SpaceX \u2013 Falcon 9",
+      "url": "https://www.spacex.com/vehicles/falcon-9/",
+      "category": "product-detail",
+      "expectedPattern": "vehicle-showcase"
+    },
+    {
+      "id": "reddit-programming",
+      "name": "Reddit \u2013 r/programming",
+      "url": "https://www.reddit.com/r/programming",
+      "category": "listing-feed",
+      "expectedPattern": "community-feed"
+    },
+    {
+      "id": "hackernews-front",
+      "name": "Hacker News",
+      "url": "https://news.ycombinator.com",
+      "category": "listing-feed",
+      "expectedPattern": "link-aggregator"
+    },
+    {
+      "id": "pinterest-home",
+      "name": "Pinterest",
+      "url": "https://www.pinterest.com",
+      "category": "listing-feed",
+      "expectedPattern": "masonry-image-grid"
+    },
+    {
+      "id": "producthunt-today",
+      "name": "Product Hunt",
+      "url": "https://www.producthunt.com",
+      "category": "listing-feed",
+      "expectedPattern": "product-listing"
+    },
+    {
+      "id": "dribbble-shots",
+      "name": "Dribbble",
+      "url": "https://dribbble.com",
+      "category": "listing-feed",
+      "expectedPattern": "design-card-grid"
+    },
+    {
+      "id": "behance-gallery",
+      "name": "Behance",
+      "url": "https://www.behance.net",
+      "category": "listing-feed",
+      "expectedPattern": "portfolio-card-grid"
+    },
+    {
+      "id": "unsplash-photos",
+      "name": "Unsplash",
+      "url": "https://unsplash.com",
+      "category": "listing-feed",
+      "expectedPattern": "masonry-photo-grid"
+    },
+    {
+      "id": "deviantart-gallery",
+      "name": "DeviantArt",
+      "url": "https://www.deviantart.com",
+      "category": "listing-feed",
+      "expectedPattern": "art-feed"
+    },
+    {
+      "id": "techcrunch-feed",
+      "name": "TechCrunch",
+      "url": "https://techcrunch.com",
+      "category": "listing-feed",
+      "expectedPattern": "article-card-feed"
+    },
+    {
+      "id": "engadget-feed",
+      "name": "Engadget",
+      "url": "https://www.engadget.com",
+      "category": "listing-feed",
+      "expectedPattern": "article-card-feed"
+    },
+    {
+      "id": "espn-home",
+      "name": "ESPN",
+      "url": "https://www.espn.com",
+      "category": "listing-feed",
+      "expectedPattern": "sports-scores-feed"
+    },
+    {
+      "id": "ign-gaming",
+      "name": "IGN",
+      "url": "https://www.ign.com",
+      "category": "listing-feed",
+      "expectedPattern": "gaming-news-feed"
+    },
+    {
+      "id": "etsy-home",
+      "name": "Etsy",
+      "url": "https://www.etsy.com",
+      "category": "listing-feed",
+      "expectedPattern": "marketplace-grid"
+    },
+    {
+      "id": "stripe-home",
+      "name": "Stripe",
+      "url": "https://stripe.com",
+      "category": "landing-marketing",
+      "expectedPattern": "saas-landing"
+    },
+    {
+      "id": "notion-home",
+      "name": "Notion",
+      "url": "https://www.notion.so",
+      "category": "landing-marketing",
+      "expectedPattern": "saas-landing"
+    },
+    {
+      "id": "figma-home",
+      "name": "Figma",
+      "url": "https://www.figma.com",
+      "category": "landing-marketing",
+      "expectedPattern": "saas-landing"
+    },
+    {
+      "id": "vercel-home",
+      "name": "Vercel",
+      "url": "https://vercel.com",
+      "category": "landing-marketing",
+      "expectedPattern": "saas-landing"
+    },
+    {
+      "id": "shopify-home",
+      "name": "Shopify",
+      "url": "https://www.shopify.com",
+      "category": "landing-marketing",
+      "expectedPattern": "ecommerce-platform-landing"
+    },
+    {
+      "id": "squarespace-home",
+      "name": "Squarespace",
+      "url": "https://www.squarespace.com",
+      "category": "landing-marketing",
+      "expectedPattern": "website-builder-landing"
+    },
+    {
+      "id": "hubspot-home",
+      "name": "HubSpot",
+      "url": "https://www.hubspot.com",
+      "category": "landing-marketing",
+      "expectedPattern": "saas-landing"
+    },
+    {
+      "id": "cloudflare-home",
+      "name": "Cloudflare",
+      "url": "https://www.cloudflare.com",
+      "category": "landing-marketing",
+      "expectedPattern": "cloud-landing"
+    },
+    {
+      "id": "digitalocean-home",
+      "name": "DigitalOcean",
+      "url": "https://www.digitalocean.com",
+      "category": "landing-marketing",
+      "expectedPattern": "cloud-landing"
+    },
+    {
+      "id": "netlify-home",
+      "name": "Netlify",
+      "url": "https://www.netlify.com",
+      "category": "landing-marketing",
+      "expectedPattern": "saas-landing"
+    },
+    {
+      "id": "twilio-home",
+      "name": "Twilio",
+      "url": "https://www.twilio.com",
+      "category": "landing-marketing",
+      "expectedPattern": "saas-landing"
+    },
+    {
+      "id": "microsoft-home",
+      "name": "Microsoft",
+      "url": "https://www.microsoft.com",
+      "category": "landing-marketing",
+      "expectedPattern": "brand-homepage"
+    },
+    {
+      "id": "salesforce-home",
+      "name": "Salesforce",
+      "url": "https://www.salesforce.com",
+      "category": "landing-marketing",
+      "expectedPattern": "crm-landing"
+    },
+    {
+      "id": "google-maps",
+      "name": "Google Maps",
+      "url": "https://www.google.com/maps",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-map"
+    },
+    {
+      "id": "yahoo-finance",
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com",
+      "category": "interactive-tool",
+      "expectedPattern": "finance-dashboard"
+    },
+    {
+      "id": "coinmarketcap",
+      "name": "CoinMarketCap",
+      "url": "https://coinmarketcap.com",
+      "category": "interactive-tool",
+      "expectedPattern": "crypto-data-table"
+    },
+    {
+      "id": "weather-com",
+      "name": "Weather.com",
+      "url": "https://weather.com",
+      "category": "interactive-tool",
+      "expectedPattern": "weather-dashboard"
+    },
+    {
+      "id": "codepen-home",
+      "name": "CodePen",
+      "url": "https://codepen.io",
+      "category": "interactive-tool",
+      "expectedPattern": "code-playground"
+    },
+    {
+      "id": "google-translate",
+      "name": "Google Translate",
+      "url": "https://translate.google.com",
+      "category": "interactive-tool",
+      "expectedPattern": "translation-tool"
+    },
+    {
+      "id": "caniuse",
+      "name": "Can I Use",
+      "url": "https://caniuse.com",
+      "category": "interactive-tool",
+      "expectedPattern": "compatibility-table"
+    },
+    {
+      "id": "speedtest",
+      "name": "Speedtest by Ookla",
+      "url": "https://www.speedtest.net",
+      "category": "interactive-tool",
+      "expectedPattern": "network-test-tool"
+    },
+    {
+      "id": "github-repo",
+      "name": "GitHub \u2013 TypeScript Repo",
+      "url": "https://github.com/microsoft/TypeScript",
+      "category": "interactive-tool",
+      "expectedPattern": "repository-browser"
+    },
+    {
+      "id": "gitlab-explore",
+      "name": "GitLab Explore",
+      "url": "https://gitlab.com/explore",
+      "category": "interactive-tool",
+      "expectedPattern": "repository-explore"
+    },
+    {
+      "id": "wolframalpha",
+      "name": "Wolfram Alpha",
+      "url": "https://www.wolframalpha.com",
+      "category": "interactive-tool",
+      "expectedPattern": "computational-search"
+    },
+    {
+      "id": "bloomberg-markets",
+      "name": "Bloomberg Markets",
+      "url": "https://www.bloomberg.com/markets",
+      "category": "interactive-tool",
+      "expectedPattern": "financial-data-dashboard"
+    },
+    {
+      "id": "investopedia",
+      "name": "Investopedia",
+      "url": "https://www.investopedia.com",
+      "category": "interactive-tool",
+      "expectedPattern": "finance-reference"
+    },
+    {
+      "id": "youtube-video",
+      "name": "YouTube Video",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "category": "media-playback",
+      "expectedPattern": "video-player"
+    },
+    {
+      "id": "vimeo-home",
+      "name": "Vimeo",
+      "url": "https://vimeo.com",
+      "category": "media-playback",
+      "expectedPattern": "video-platform"
+    },
+    {
+      "id": "twitch-directory",
+      "name": "Twitch Browse",
+      "url": "https://www.twitch.tv/directory",
+      "category": "media-playback",
+      "expectedPattern": "live-stream-directory"
+    },
+    {
+      "id": "soundcloud-home",
+      "name": "SoundCloud",
+      "url": "https://soundcloud.com",
+      "category": "media-playback",
+      "expectedPattern": "audio-stream"
+    },
+    {
+      "id": "spotify-home",
+      "name": "Spotify Web",
+      "url": "https://open.spotify.com",
+      "category": "media-playback",
+      "expectedPattern": "music-player"
+    },
+    {
+      "id": "flickr-explore",
+      "name": "Flickr Explore",
+      "url": "https://www.flickr.com/explore",
+      "category": "media-playback",
+      "expectedPattern": "photo-gallery"
+    },
+    {
+      "id": "ted-talks",
+      "name": "TED Talks",
+      "url": "https://www.ted.com",
+      "category": "media-playback",
+      "expectedPattern": "talk-catalog"
+    },
+    {
+      "id": "archive-org",
+      "name": "Internet Archive",
+      "url": "https://archive.org",
+      "category": "media-playback",
+      "expectedPattern": "media-archive"
+    },
+    {
+      "id": "giphy-home",
+      "name": "GIPHY",
+      "url": "https://giphy.com",
+      "category": "media-playback",
+      "expectedPattern": "animated-image-feed"
+    },
+    {
+      "id": "pexels-home",
+      "name": "Pexels",
+      "url": "https://www.pexels.com",
+      "category": "media-playback",
+      "expectedPattern": "stock-photo-gallery"
+    },
+    {
+      "id": "dailymotion-home",
+      "name": "Dailymotion",
+      "url": "https://www.dailymotion.com",
+      "category": "media-playback",
+      "expectedPattern": "video-platform"
+    },
+    {
+      "id": "bandcamp-home",
+      "name": "Bandcamp",
+      "url": "https://bandcamp.com",
+      "category": "media-playback",
+      "expectedPattern": "music-marketplace"
+    },
+    {
+      "id": "mdn-docs",
+      "name": "MDN \u2013 JavaScript",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+      "category": "reference-portal",
+      "expectedPattern": "documentation-hub"
+    },
+    {
+      "id": "w3schools-reference",
+      "name": "W3Schools",
+      "url": "https://www.w3schools.com",
+      "category": "reference-portal",
+      "expectedPattern": "tutorial-portal"
+    },
+    {
+      "id": "react-docs",
+      "name": "React Docs",
+      "url": "https://react.dev",
+      "category": "reference-portal",
+      "expectedPattern": "documentation-hub"
+    },
+    {
+      "id": "tailwind-docs",
+      "name": "Tailwind CSS Docs",
+      "url": "https://tailwindcss.com/docs",
+      "category": "reference-portal",
+      "expectedPattern": "documentation-hub"
+    },
+    {
+      "id": "docker-docs",
+      "name": "Docker Docs",
+      "url": "https://docs.docker.com",
+      "category": "reference-portal",
+      "expectedPattern": "documentation-hub"
+    },
+    {
+      "id": "khanacademy-home",
+      "name": "Khan Academy",
+      "url": "https://www.khanacademy.org",
+      "category": "reference-portal",
+      "expectedPattern": "course-catalog"
+    },
+    {
+      "id": "coursera-catalog",
+      "name": "Coursera",
+      "url": "https://www.coursera.org",
+      "category": "reference-portal",
+      "expectedPattern": "course-catalog"
+    },
+    {
+      "id": "edx-courses",
+      "name": "edX",
+      "url": "https://www.edx.org",
+      "category": "reference-portal",
+      "expectedPattern": "course-catalog"
+    },
+    {
+      "id": "udemy-courses",
+      "name": "Udemy",
+      "url": "https://www.udemy.com",
+      "category": "reference-portal",
+      "expectedPattern": "course-catalog"
+    },
+    {
+      "id": "duolingo-home",
+      "name": "Duolingo",
+      "url": "https://www.duolingo.com",
+      "category": "reference-portal",
+      "expectedPattern": "learning-landing"
+    },
+    {
+      "id": "usa-gov",
+      "name": "USA.gov",
+      "url": "https://www.usa.gov",
+      "category": "reference-portal",
+      "expectedPattern": "government-portal"
+    },
+    {
+      "id": "huggingface-hub",
+      "name": "Hugging Face",
+      "url": "https://huggingface.co",
+      "category": "reference-portal",
+      "expectedPattern": "model-hub"
+    },
+    {
+      "id": "ap-news",
+      "name": "AP News",
+      "url": "https://apnews.com/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "smithsonian-magazine",
+      "name": "Smithsonian Magazine",
+      "url": "https://www.smithsonianmag.com/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "science-news",
+      "name": "Science News",
+      "url": "https://www.sciencenews.org/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "quanta-magazine",
+      "name": "Quanta Magazine",
+      "url": "https://www.quantamagazine.org/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "the-conversation",
+      "name": "The Conversation",
+      "url": "https://theconversation.com/us",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "propublica",
+      "name": "ProPublica",
+      "url": "https://www.propublica.org/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "aeon-essays",
+      "name": "Aeon",
+      "url": "https://aeon.co/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "nautilus-magazine",
+      "name": "Nautilus",
+      "url": "https://nautil.us/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "public-domain-review",
+      "name": "The Public Domain Review",
+      "url": "https://publicdomainreview.org/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "our-world-data",
+      "name": "Our World in Data",
+      "url": "https://ourworldindata.org/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "webdev-learn-performance",
+      "name": "web.dev Learn Performance",
+      "url": "https://web.dev/learn/performance",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "css-tricks",
+      "name": "CSS-Tricks",
+      "url": "https://css-tricks.com/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "alistapart",
+      "name": "A List Apart",
+      "url": "https://alistapart.com/",
+      "category": "content-article",
+      "expectedPattern": "content-article"
+    },
+    {
+      "id": "arxiv-search",
+      "name": "arXiv search",
+      "url": "https://arxiv.org/search/?query=web+performance&searchtype=all",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "pubmed-search",
+      "name": "PubMed search",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/?term=usability",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "europepmc-search",
+      "name": "Europe PMC search",
+      "url": "https://europepmc.org/search?query=usability",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "openlibrary-search",
+      "name": "Open Library search",
+      "url": "https://openlibrary.org/search?q=web+design",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "gutenberg-search",
+      "name": "Project Gutenberg search",
+      "url": "https://www.gutenberg.org/ebooks/search/?query=science",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "smithsonian-search",
+      "name": "Smithsonian search",
+      "url": "https://www.si.edu/search?edan_q=design",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "loc-search",
+      "name": "Library of Congress search",
+      "url": "https://www.loc.gov/search/?q=design",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "wikimedia-search",
+      "name": "Wikimedia Commons search",
+      "url": "https://commons.wikimedia.org/w/index.php?search=architecture&title=Special:MediaSearch&type=image",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "pypi-search",
+      "name": "PyPI search",
+      "url": "https://pypi.org/search/?q=benchmark",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "crates-search",
+      "name": "crates.io search",
+      "url": "https://crates.io/search?q=benchmark",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "rubygems-search",
+      "name": "RubyGems search",
+      "url": "https://rubygems.org/search?query=benchmark",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "nuget-search",
+      "name": "NuGet search",
+      "url": "https://www.nuget.org/packages?q=benchmark",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "data-gov-search",
+      "name": "Data.gov search",
+      "url": "https://catalog.data.gov/dataset/?q=transportation",
+      "category": "search-results",
+      "expectedPattern": "search-results"
+    },
+    {
+      "id": "framework-laptop",
+      "name": "Framework Laptop 13",
+      "url": "https://frame.work/products/laptop13",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "raspberrypi-five",
+      "name": "Raspberry Pi 5",
+      "url": "https://www.raspberrypi.com/products/raspberry-pi-5/",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "fairphone-product",
+      "name": "Fairphone product",
+      "url": "https://shop.fairphone.com/fairphone-6",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "logitech-mx-master",
+      "name": "Logitech MX Master product",
+      "url": "https://www.logitech.com/en-us/products/mice/mx-master-3s.html",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "ikea-billy",
+      "name": "IKEA Billy bookcase",
+      "url": "https://www.ikea.com/us/en/p/billy-bookcase-white-00263850/",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "patagonia-torrentshell",
+      "name": "Patagonia Torrentshell",
+      "url": "https://www.patagonia.com/product/mens-torrentshell-3l-rain-jacket/85241.html",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "lego-bonsai",
+      "name": "LEGO Bonsai Tree",
+      "url": "https://www.lego.com/en-us/product/bonsai-tree-10281",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "nintendo-switch",
+      "name": "Nintendo Switch",
+      "url": "https://www.nintendo.com/us/gaming-systems/switch/",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "steam-stardew",
+      "name": "Stardew Valley",
+      "url": "https://store.steampowered.com/app/413150/Stardew_Valley/",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "gutenberg-frankenstein",
+      "name": "Frankenstein book record",
+      "url": "https://www.gutenberg.org/ebooks/84",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "loc-photograph",
+      "name": "Library of Congress photograph record",
+      "url": "https://www.loc.gov/item/2016805158/",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "adafruit-feather",
+      "name": "Adafruit Feather product",
+      "url": "https://www.adafruit.com/product/3403",
+      "category": "product-detail",
+      "expectedPattern": "product-detail"
+    },
+    {
+      "id": "github-trending",
+      "name": "GitHub Trending",
+      "url": "https://github.com/trending",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "lobsters-feed",
+      "name": "Lobsters",
+      "url": "https://lobste.rs/",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "dev-community",
+      "name": "DEV Community",
+      "url": "https://dev.to/",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "f-droid-packages",
+      "name": "F-Droid package catalog",
+      "url": "https://f-droid.org/en/packages/",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "flathub-apps",
+      "name": "Flathub",
+      "url": "https://flathub.org/",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "ubuntu-snap-store",
+      "name": "Snap Store",
+      "url": "https://snapcraft.io/store",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "gutenberg-popular",
+      "name": "Project Gutenberg popular books",
+      "url": "https://www.gutenberg.org/browse/scores/top",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "doaj-journals",
+      "name": "DOAJ journals",
+      "url": "https://doaj.org/search/journals",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "arxiv-cs-recent",
+      "name": "arXiv recent computer science",
+      "url": "https://arxiv.org/list/cs/recent",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "met-collection",
+      "name": "Metropolitan Museum collection",
+      "url": "https://www.metmuseum.org/art/collection",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "rijksmuseum-collection",
+      "name": "Rijksmuseum collection",
+      "url": "https://www.rijksmuseum.nl/en/collection",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "nationalgallery-collection",
+      "name": "National Gallery paintings",
+      "url": "https://www.nationalgallery.org.uk/paintings/explore-the-paintings",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "itch-games",
+      "name": "itch.io games",
+      "url": "https://itch.io/games",
+      "category": "listing-feed",
+      "expectedPattern": "listing-feed"
+    },
+    {
+      "id": "linear-landing",
+      "name": "Linear",
+      "url": "https://linear.app/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "slack-landing",
+      "name": "Slack",
+      "url": "https://slack.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "zoom-landing",
+      "name": "Zoom",
+      "url": "https://www.zoom.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "atlassian-landing",
+      "name": "Atlassian",
+      "url": "https://www.atlassian.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "basecamp-landing",
+      "name": "Basecamp",
+      "url": "https://basecamp.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "buffer-landing",
+      "name": "Buffer",
+      "url": "https://buffer.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "mailchimp-landing",
+      "name": "Mailchimp",
+      "url": "https://mailchimp.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "webflow-landing",
+      "name": "Webflow",
+      "url": "https://webflow.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "framer-landing",
+      "name": "Framer",
+      "url": "https://www.framer.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "supabase-landing",
+      "name": "Supabase",
+      "url": "https://supabase.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "railway-landing",
+      "name": "Railway",
+      "url": "https://railway.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "render-landing",
+      "name": "Render",
+      "url": "https://render.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "posthog-landing",
+      "name": "PostHog",
+      "url": "https://posthog.com/",
+      "category": "landing-marketing",
+      "expectedPattern": "landing-marketing"
+    },
+    {
+      "id": "desmos-calculator",
+      "name": "Desmos graphing calculator",
+      "url": "https://www.desmos.com/calculator",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "geogebra-calculator",
+      "name": "GeoGebra calculator",
+      "url": "https://www.geogebra.org/calculator",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "openstreetmap-tool",
+      "name": "OpenStreetMap",
+      "url": "https://www.openstreetmap.org/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "observable-plot-tool",
+      "name": "Observable Plot",
+      "url": "https://observablehq.com/plot/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "regex101-tool",
+      "name": "regex101",
+      "url": "https://regex101.com/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "regexr-tool",
+      "name": "RegExr",
+      "url": "https://regexr.com/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "excalidraw-tool",
+      "name": "Excalidraw",
+      "url": "https://excalidraw.com/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "diagrams-tool",
+      "name": "diagrams.net",
+      "url": "https://app.diagrams.net/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "overpass-turbo-tool",
+      "name": "Overpass Turbo",
+      "url": "https://overpass-turbo.eu/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "earth-nullschool-tool",
+      "name": "Earth wind visualization",
+      "url": "https://earth.nullschool.net/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "ventusky-tool",
+      "name": "Ventusky",
+      "url": "https://www.ventusky.com/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "timeanddate-calendar",
+      "name": "Time and Date calendar",
+      "url": "https://www.timeanddate.com/calendar/",
+      "category": "interactive-tool",
+      "expectedPattern": "interactive-tool"
+    },
+    {
+      "id": "wikimedia-featured-images",
+      "name": "Wikimedia featured pictures",
+      "url": "https://commons.wikimedia.org/wiki/Commons:Featured_pictures",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "nasa-image-library",
+      "name": "NASA Image and Video Library",
+      "url": "https://images.nasa.gov/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "esa-image-gallery",
+      "name": "ESA image gallery",
+      "url": "https://www.esa.int/ESA_Multimedia/Images",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "hubble-gallery",
+      "name": "Hubble image gallery",
+      "url": "https://esahubble.org/images/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "webb-gallery",
+      "name": "Webb image gallery",
+      "url": "https://esawebb.org/images/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "nationalgallery-art",
+      "name": "National Gallery of Art collection",
+      "url": "https://www.nga.gov/artworks.html",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "nationalarchives-video",
+      "name": "US National Archives video resources",
+      "url": "https://www.archives.gov/research/motion-pictures",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "incompetech-music",
+      "name": "Incompetech royalty-free music",
+      "url": "https://incompetech.com/music/royalty-free/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "musopen-music",
+      "name": "Musopen recordings",
+      "url": "https://musopen.org/music/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "radio-garden",
+      "name": "Radio Garden",
+      "url": "https://radio.garden/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "librevox-audiobooks",
+      "name": "LibriVox",
+      "url": "https://librivox.org/",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "europeana-collections",
+      "name": "Europeana collections",
+      "url": "https://www.europeana.eu/en/collections",
+      "category": "media-playback",
+      "expectedPattern": "media-playback"
+    },
+    {
+      "id": "python-docs",
+      "name": "Python documentation",
+      "url": "https://docs.python.org/3/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "nodejs-docs",
+      "name": "Node.js documentation",
+      "url": "https://nodejs.org/api/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "typescript-docs",
+      "name": "TypeScript documentation",
+      "url": "https://www.typescriptlang.org/docs/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "rust-book",
+      "name": "Rust book",
+      "url": "https://doc.rust-lang.org/book/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "go-docs",
+      "name": "Go documentation",
+      "url": "https://go.dev/doc/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "postgres-docs",
+      "name": "PostgreSQL documentation",
+      "url": "https://www.postgresql.org/docs/current/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "sqlite-docs",
+      "name": "SQLite documentation",
+      "url": "https://www.sqlite.org/docs.html",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "numpy-docs",
+      "name": "NumPy documentation",
+      "url": "https://numpy.org/doc/stable/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "scipy-docs",
+      "name": "SciPy documentation",
+      "url": "https://docs.scipy.org/doc/scipy/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "django-docs",
+      "name": "Django documentation",
+      "url": "https://docs.djangoproject.com/en/stable/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "w3c-standards",
+      "name": "W3C standards",
+      "url": "https://www.w3.org/standards/",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    },
+    {
+      "id": "nist-publications",
+      "name": "NIST publications",
+      "url": "https://www.nist.gov/publications",
+      "category": "reference-portal",
+      "expectedPattern": "reference-portal"
+    }
+  ]
+}
